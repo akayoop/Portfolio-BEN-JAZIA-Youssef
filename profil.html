@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BEN JAZIA Youssef - Profil Professionnel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper-white: #fafafa;
+            --paper-dark: #37474f;
+            --paper-darker: #263238;
+            --ink-dark: #1a1a1a;
+            --ink-light: #546e7a;
+            --fold-shadow: #78909c;
+            --accent-slate: #455a64;
+            --accent-blue: #546e7a;
+            --accent-steel: #607d8b;
+            --accent-dark: #37474f;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #37474f 0%, #455a64 50%, #546e7a 100%);
+            color: var(--paper-white);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Effet papier plié en arrière-plan */
+        .origami-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .paper-fold {
+            position: absolute;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(84,110,122,0.1) 100%);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 
+                inset -2px -2px 8px rgba(0,0,0,0.2),
+                2px 2px 12px rgba(0,0,0,0.3);
+            transform-origin: center;
+            animation: float-paper 20s infinite ease-in-out;
+            opacity: 0.6;
+        }
+        
+        .paper-fold:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: 10%;
+            left: 5%;
+            transform: rotate(15deg);
+            clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%);
+            animation-delay: 0s;
+        }
+        
+        .paper-fold:nth-child(2) {
+            width: 250px;
+            height: 180px;
+            top: 60%;
+            right: 8%;
+            transform: rotate(-20deg);
+            clip-path: polygon(20% 0, 100% 0, 100% 100%, 0 100%);
+            animation-delay: 3s;
+        }
+        
+        .paper-fold:nth-child(3) {
+            width: 180px;
+            height: 220px;
+            bottom: 15%;
+            left: 15%;
+            transform: rotate(25deg);
+            clip-path: polygon(0 0, 100% 20%, 100% 100%, 0 80%);
+            animation-delay: 6s;
+        }
+        
+        .paper-fold:nth-child(4) {
+            width: 160px;
+            height: 160px;
+            top: 30%;
+            right: 25%;
+            transform: rotate(-35deg);
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 20% 100%);
+            animation-delay: 9s;
+        }
+        
+        @keyframes float-paper {
+            0%, 100% { 
+                transform: translateY(0) rotate(var(--base-rotation, 0deg));
+            }
+            33% { 
+                transform: translateY(-20px) rotate(calc(var(--base-rotation, 0deg) + 5deg));
+            }
+            66% { 
+                transform: translateY(10px) rotate(calc(var(--base-rotation, 0deg) - 5deg));
+            }
+        }
+        
+        /* Grille de points subtile */
+        .dot-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .profile-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Bouton retour style origami */
+        .back-button {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 0.875rem 1.75rem;
+            border-radius: 0;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 
+                4px 4px 0 rgba(0,0,0,0.3),
+                inset -2px -2px 4px rgba(0,0,0,0.2);
+            z-index: 100;
+            clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+        }
+        
+        .back-button:hover {
+            transform: translate(-4px, -4px);
+            background: rgba(84, 110, 122, 0.3);
+            box-shadow: 
+                8px 8px 0 rgba(84, 110, 122, 0.5),
+                inset -2px -2px 4px rgba(0,0,0,0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Header style carte d'identité origami */
+        .profile-header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 0;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 
+                8px 8px 0 rgba(0,0,0,0.3),
+                inset -3px -3px 8px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+            animation: slideDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) rotateX(20deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) rotateX(0);
+            }
+        }
+        
+        /* Bandes décoratives origami */
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background: linear-gradient(90deg, 
+                #546e7a 0%, 
+                #546e7a 33%,
+                #607d8b 33%,
+                #607d8b 66%,
+                #78909c 66%,
+                #78909c 100%);
+        }
+        
+        .profile-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            background: rgba(84, 110, 122, 0.3);
+            clip-path: polygon(100% 0, 100% 100%, 0 100%);
+        }
+        
+        .avatar {
+            width: 160px;
+            height: 160px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            color: white;
+            font-weight: 800;
+            box-shadow: 
+                6px 6px 0 rgba(84, 110, 122, 0.5),
+                inset -2px -2px 8px rgba(0,0,0,0.2);
+            position: relative;
+            flex-shrink: 0;
+            clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        .header-text h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .header-text h1::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60%;
+            height: 4px;
+            background: rgba(84, 110, 122, 0.8);
+        }
+        
+        .header-text .title {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+            line-height: 1.8;
+        }
+        
+        /* Grille de cartes style étiquettes */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            padding: 2.5rem;
+            box-shadow: 
+                6px 6px 0 rgba(0,0,0,0.3),
+                inset -2px -2px 6px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .card:nth-child(1) { 
+            animation-delay: 0.1s;
+            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+        }
+        .card:nth-child(2) { 
+            animation-delay: 0.2s;
+            clip-path: polygon(0 15px, 15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+        }
+        .card:nth-child(3) { 
+            animation-delay: 0.3s;
+            clip-path: polygon(15px 0, 100% 0, 100% 100%, 0 100%, 0 15px);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px) rotateX(10deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) rotateX(0);
+            }
+        }
+        
+        /* Onglet coloré en haut de chaque carte */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 2rem;
+            width: 80px;
+            height: 30px;
+            background: var(--card-color, var(--accent-gold));
+            clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+            transform: translateY(-100%);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .card:nth-child(1) { --card-color: #546e7a; }
+        .card:nth-child(2) { --card-color: #607d8b; }
+        .card:nth-child(3) { --card-color: #78909c; }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 
+                12px 12px 0 rgba(84, 110, 122, 0.4),
+                inset -2px -2px 6px rgba(0,0,0,0.2);
+        }
+        
+        .card-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-transform: uppercase;
+            border-bottom: 3px solid var(--card-color, #546e7a);
+            padding-bottom: 1rem;
+        }
+        
+        .card-icon {
+            font-size: 2rem;
+        }
+        
+        /* Items d'information style tampon */
+        .info-item {
+            margin-bottom: 1.75rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 6px solid var(--card-color, #546e7a);
+            border-right: 2px solid rgba(255,255,255,0.1);
+            border-top: 2px solid rgba(255,255,255,0.1);
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .info-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(8px);
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+        }
+        
+        .info-label {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            color: var(--ink-dark);
+            font-size: 0.75rem;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: var(--card-color, #546e7a);
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            clip-path: polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 0 100%);
+        }
+        
+        .info-value {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.95);
+            line-height: 1.7;
+            margin-bottom: 0.35rem;
+        }
+        
+        .info-value strong {
+            color: white;
+            font-weight: 700;
+        }
+        
+        /* Citation style note manuscrite */
+        .quote-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            padding: 3rem;
+            box-shadow: 8px 8px 0 rgba(84, 110, 122, 0.4);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s backwards;
+            clip-path: polygon(0 10px, 10px 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+        }
+        
+        .quote-section::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 40px;
+            font-size: 120px;
+            color: rgba(84, 110, 122, 0.3);
+            font-family: Georgia, serif;
+            line-height: 1;
+            z-index: 0;
+        }
+        
+        .quote-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: white;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+        
+        .quote-author {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: rgba(120, 144, 156, 1);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #263238;
+            color: white;
+            padding: 1.5rem 0;
+            margin-top: 3rem;
+            box-shadow: 0 -6px 0 rgba(84, 110, 122, 0.6);
+            position: relative;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg,
+                #546e7a 0%,
+                #546e7a 33%,
+                #607d8b 33%,
+                #607d8b 66%,
+                #78909c 66%,
+                #78909c 100%);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%);
+        }
+        
+        .contact-item:hover {
+            background: white;
+            color: #263238;
+            transform: translateY(-3px);
+            box-shadow: 4px 4px 0 rgba(84, 110, 122, 0.6);
+        }
+        
+        .contact-icon {
+            font-size: 1.25rem;
+        }
+        
+        .linkedin-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%);
+        }
+        
+        .linkedin-link:hover {
+            background: white;
+            color: #263238;
+            transform: translateY(-3px);
+            box-shadow: 4px 4px 0 rgba(120, 144, 156, 0.6);
+        }
+        
+        .linkedin-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+                padding: 2.5rem;
+            }
+            
+            .header-text h1 {
+                font-size: 2.5rem;
+            }
+            
+            .header-text h1::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .avatar {
+                width: 120px;
+                height: 120px;
+                font-size: 2.5rem;
+            }
+            
+            .back-button {
+                top: 1rem;
+                left: 1rem;
+                padding: 0.75rem 1.5rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .profile-container {
+                padding: 1rem;
+            }
+            
+            .header-text h1 {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 1.75rem;
+            }
+            
+            .quote-text {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Formes origami en arrière-plan -->
+    <div class="origami-background">
+        <div class="paper-fold" style="--base-rotation: 15deg;"></div>
+        <div class="paper-fold" style="--base-rotation: -20deg;"></div>
+        <div class="paper-fold" style="--base-rotation: 25deg;"></div>
+        <div class="paper-fold" style="--base-rotation: -35deg;"></div>
+    </div>
+    
+    <div class="dot-grid"></div>
+    
+    <a href="index.html" class="back-button">← Retour</a>
+    
+    <div class="profile-container">
+        <header class="profile-header">
+            <div class="avatar">Y</div>
+            <div class="header-text">
+                <h1>BEN JAZIA Youssef</h1>
+                <div class="title">Étudiant en BUT Métiers de la Transition et de l'Efficacité Énergétique<br>Alternant chez Lefort Francheteau - Vinci Energies</div>
+            </div>
+        </header>
+        
+        <main class="content-grid">
+            <!-- Carte Présentation -->
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="card-icon">👋</span>
+                    À propos
+                </h2>
+                
+                <div class="info-item">
+                    <div class="info-value">
+                        Passionné par les <strong>enjeux énergétiques</strong> et la <strong>transition écologique</strong>, je développe mes compétences à travers une formation technique exigeante et une expérience professionnelle enrichissante en alternance.
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-value">
+                        Mon parcours combine <strong>rigueur scientifique</strong> acquise en classes préparatoires et <strong>expertise technique</strong> développée en BUT MT2E, me permettant d'aborder les défis énergétiques avec une approche globale et innovante.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Carte Situation Actuelle -->
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="card-icon">🎓</span>
+                    Situation actuelle
+                </h2>
+                
+                <div class="info-item">
+                    <div class="info-label">FORMATION</div>
+                    <div class="info-value"><strong>BUT Métiers de la Transition et de l'Efficacité Énergétique</strong></div>
+                    <div class="info-value">IUT d'Orléans • 2025-2027</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">ALTERNANCE</div>
+                    <div class="info-value"><strong>Assistant Responsable d'affaires</strong></div>
+                    <div class="info-value">Lefort Francheteau - Vinci Energies</div>
+                    <div class="info-value" style="margin-top: 0.5rem; font-size: 0.9rem; color: rgba(255, 255, 255, 0.75);">
+                        Gestion de projets CVC, suivi technique des chantiers, relation client
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Carte Parcours Scolaire -->
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="card-icon">📚</span>
+                    Parcours scolaire
+                </h2>
+                
+                <div class="info-item">
+                    <div class="info-label">2023 - 2025</div>
+                    <div class="info-value"><strong>Classe Préparatoire aux Grandes Écoles</strong></div>
+                    <div class="info-value">MPSI / MP • Lycée Pothier, Orléans</div>
+                    <div class="info-value" style="margin-top: 0.5rem; font-size: 0.9rem; color: rgba(255, 255, 255, 0.75);">
+                        Mathématiques, Physique, Sciences de l'Ingénieur
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">2023</div>
+                    <div class="info-value"><strong>Baccalauréat Général</strong></div>
+                    <div class="info-value">Spécialités Mathématiques & Physique-Chimie</div>
+                    <div class="info-value">Mention Assez Bien</div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Citation -->
+        <div class="quote-section">
+            <p class="quote-text">
+                Le courage n'est pas l'absence de peur, mais la capacité de vaincre ce qui fait peur.
+            </p>
+            <p class="quote-author">— Nelson Mandela</p>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="contact-item">
+                <span class="contact-icon">📧</span>
+                <span>youssefbenjazia36@gmail.com</span>
+            </div>
+            <a href="https://www.linkedin.com/in/youssef-ben-jazia-2b2aa4383/" target="_blank" rel="noopener noreferrer" class="linkedin-link">
+                <svg class="linkedin-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                </svg>
+                LinkedIn
+            </a>
+        </div>
+    </footer>
+</body>
+</html>

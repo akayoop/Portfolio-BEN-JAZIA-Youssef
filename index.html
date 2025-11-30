@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Ikigai - BEN JAZIA Youssef</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-dark: #0f172a;
+            --secondary-dark: #1e293b;
+            --accent: #3b82f6;
+            --accent-light: #60a5fa;
+            --transition-speed: 0.3s;
+        }
+
+        /* ========== SYSTÈME DE TRANSITION ZOOM ========== */
+        .page-wrapper {
+            min-height: 100vh;
+            opacity: 0;
+            transform: scale(0.8);
+            animation: zoomIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes zoomIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+                filter: blur(20px);
+            }
+            60% {
+                opacity: 1;
+                filter: blur(0px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+                filter: blur(0px);
+            }
+        }
+
+        /* Overlay de transition */
+        .transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10000;
+            display: none;
+        }
+
+        .transition-overlay.active {
+            display: block;
+            pointer-events: all;
+        }
+
+        /* Cercle de zoom */
+        .zoom-circle {
+            position: fixed;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+            box-shadow: 
+                0 0 0 20px rgba(255, 255, 255, 0.1),
+                0 0 100px rgba(255, 255, 255, 0.3),
+                inset 0 0 100px rgba(255, 255, 255, 0.1);
+        }
+
+        .zoom-circle.expanding {
+            transform: translate(-50%, -50%) scale(3);
+            opacity: 1;
+        }
+
+        /* Effet de flou progressif */
+        .blur-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.8) 100%);
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            pointer-events: none;
+        }
+
+        .blur-overlay.active {
+            opacity: 1;
+        }
+
+        /* Texte de chargement élégant */
+        .loading-text {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2.5rem;
+            font-weight: 800;
+            font-family: 'Space Grotesk', sans-serif;
+            color: white;
+            opacity: 0;
+            z-index: 10001;
+            text-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+            display: none;
+        }
+
+        .loading-text.active {
+            display: block;
+            animation: textFadeInOut 1.2s ease-in-out;
+        }
+
+        @keyframes textFadeInOut {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            40% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            60% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+        }
+
+        /* ========== RESTE DU STYLE ========== */
+        /* Fond moderne avec grille animée */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Grille animée en arrière-plan */
+        .grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0;
+            animation: gridMove 30s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        /* Orbes lumineux flottants */
+        .orbs-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.2;
+            animation: floatOrb 20s infinite ease-in-out;
+        }
+
+        .orb:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #3b82f6, transparent);
+            top: -10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+
+        .orb:nth-child(2) {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #8b5cf6, transparent);
+            top: 60%;
+            right: -15%;
+            animation-delay: 5s;
+        }
+
+        .orb:nth-child(3) {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, #06b6d4, transparent);
+            bottom: -10%;
+            left: 40%;
+            animation-delay: 10s;
+        }
+
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(40px, -40px) scale(1.1); }
+            50% { transform: translate(-30px, 30px) scale(0.9); }
+            75% { transform: translate(30px, 20px) scale(1.05); }
+        }
+
+        /* Particules étoilées */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* Conteneur principal */
+        .container {
+            max-width: 98vw;
+            margin: 0 auto;
+            padding: 10px 15px 5px 15px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Header moderne avec glassmorphism */
+        .main-header {
+            margin-bottom: 5px;
+            flex-shrink: 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #ffffff 0%, #60a5fa 50%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+            text-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.4em;
+            font-weight: 400;
+            margin-bottom: 8px;
+            opacity: 0.85;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 0.05em;
+        }
+
+        .description {
+            font-size: 1em;
+            opacity: 0.7;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Container Ikigai avec effet de profondeur */
+        .ikigai-container {
+            width: 100%;
+            position: relative;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 0;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out 0.3s backwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .ikigai-svg {
+            width: 100%;
+            height: 100%;
+            max-height: 80vh;
+            max-width: 900px;
+            filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.4));
+            overflow: visible;
+            transform: translateY(50px);
+        }
+
+        /* Animations des cercles Ikigai - FLUIDITÉ OPTIMISÉE */
+        .inter-circle,
+        .main-circle,
+        .center-circle {
+            transition: transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        filter 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        opacity 0.4s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .inter-circle circle,
+        .main-circle circle,
+        .center-circle circle {
+            transition: opacity 0.6s ease,
+                        filter 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .inter-circle text,
+        .main-circle text,
+        .center-circle text {
+            transition: filter 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        opacity 0.5s ease;
+        }
+
+        .inter-circle:hover,
+        .main-circle:hover,
+        .center-circle:hover {
+            transform: scale(1.18);
+            filter: brightness(1.15) 
+                    contrast(1.05)
+                    saturate(1.1)
+                    drop-shadow(0 0 25px rgba(255,255,255,0.6))
+                    drop-shadow(0 10px 35px rgba(0,0,0,0.5));
+            isolation: isolate;
+            z-index: 9999 !important;
+        }
+
+        /* Amélioration visuelle des cercles avec effet néon moderne */
+        .inter-circle circle,
+        .main-circle circle,
+        .center-circle circle {
+            filter: drop-shadow(0 4px 20px rgba(0,0,0,0.4));
+        }
+
+        /* Dégradés modernes pour les cercles */
+        .vision circle { fill: url(#gradientVision); }
+        .projets circle { fill: url(#gradientProjets); }
+        .expertise circle { fill: url(#gradientExpertise); }
+        .impact circle { fill: url(#gradientImpact); }
+        .passion circle { fill: url(#gradientPassion); }
+        .competences circle { fill: url(#gradientCompetences); }
+        .mission circle { fill: url(#gradientMission); }
+        .profession circle { fill: url(#gradientProfession); }
+        .center-circle circle { fill: url(#gradientCenter); }
+
+        /* Animation de repositionnement - PRÉSERVÉE */
+        .repositioning {
+            animation: discreteReposition 0.35s ease-in-out;
+        }
+
+        @keyframes discreteReposition {
+            0% { opacity: 1; }
+            50% { opacity: 0.92; }
+            100% { opacity: 1; }
+        }
+
+        .inter-circle:hover circle,
+        .main-circle:hover circle,
+        .center-circle:hover circle {
+            opacity: 1;
+        }
+
+        .inter-circle:hover text,
+        .main-circle:hover text,
+        .center-circle:hover text {
+            filter: drop-shadow(0 0 15px rgba(255,255,255,1));
+        }
+
+        /* Titres avec effet moderne */
+        .circle-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 34px;
+            font-weight: 700;
+            fill: white;
+            pointer-events: none;
+            text-shadow: 2px 2px 12px rgba(0,0,0,0.8);
+            text-anchor: middle;
+            dominant-baseline: central;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .inter-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 28px;
+            font-weight: 600;
+            fill: white;
+            pointer-events: none;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+            text-anchor: middle;
+            dominant-baseline: central;
+            letter-spacing: 1.5px;
+        }
+
+        .center-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            fill: white;
+            pointer-events: none;
+            text-shadow: 3px 3px 15px rgba(0,0,0,0.9);
+            text-anchor: middle;
+            dominant-baseline: central;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* Footer moderne avec glassmorphism */
+        .main-footer {
+            flex-shrink: 0;
+            margin-top: 10px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s ease-out 0.5s backwards;
+      
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+}
+
+        .contact-info p {
+            font-size: 0.95em;
+            font-weight: 600;
+            color: var(--accent-light);
+            transition: all 0.3s ease;
+            padding: 10px 20px;
+            border-radius: 12px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            margin: 0;
+}
+
+        .contact-info p:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+        .linkedin-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95em;
+            font-weight: 600;
+            color: var(--accent-light);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            transition: all 0.3s ease;
+}
+
+        .linkedin-link:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .linkedin-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .linkedin-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95em;
+            font-weight: 600;
+            color: var(--accent-light);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .linkedin-link:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .linkedin-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+}
+
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title { font-size: 2em; }
+            .subtitle { font-size: 1.2em; }
+            .description { font-size: 0.9em; }
+            
+            .circle-title { font-size: 18px; }
+            .inter-title { font-size: 16px; }
+            .center-title { font-size: 20px; }
+            
+            .ikigai-svg { max-height: 70vh; }
+            .contact-info { gap: 15px; }
+            
+            .main-header,
+            .main-footer {
+                padding: 15px;
+                border-radius: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title { font-size: 1.6em; }
+            .ikigai-svg { max-height: 65vh; }
+            .circle-title { font-size: 14px; }
+            .inter-title { font-size: 12px; }
+            .center-title { font-size: 16px; }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Système de transition -->
+    <div class="transition-overlay" id="transitionOverlay">
+        <div class="zoom-circle" id="zoomCircle"></div>
+        <div class="blur-overlay" id="blurOverlay"></div>
+        <div class="loading-text" id="loadingText"></div>
+    </div>
+
+    <!-- Contenu de la page -->
+    <div class="page-wrapper">
+        <!-- Grille animée -->
+        <div class="grid-background"></div>
+        
+        <!-- Orbes lumineux -->
+        <div class="orbs-container">
+            <div class="orb"></div>
+            <div class="orb"></div>
+            <div class="orb"></div>
+        </div>
+        
+        <!-- Étoiles scintillantes -->
+        <div class="stars" id="stars"></div>
+
+        <div class="container">
+            <header class="main-header">
+                <h1 class="title">BEN JAZIA Youssef</h1>
+                <h2 class="subtitle">Portfolio Ikigai — 2025</h2>
+                <p class="description">Explorez mon univers professionnel en cliquant sur chaque élément</p>
+            </header>
+
+            <div class="ikigai-container">
+                <svg viewBox="0 0 1800 1600" class="ikigai-svg">
+                    <defs>
+                        <!-- Dégradés modernes pour chaque cercle -->
+                        
+                        <radialGradient id="gradientVision" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" style="stop-color:#ea580c;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#c2410c;stop-opacity:0.95" />
+                        </radialGradient>
+                        
+                        <radialGradient id="gradientProjets" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" style="stop-color:#9333ea;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#7e22ce;stop-opacity:0.95" />
+                        </radialGradient>
+                        
+                        <radialGradient id="gradientExpertise" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" style="stop-color:#0891b2;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#0e7490;stop-opacity:0.95" />
+                        </radialGradient>
+                        
+                        <radialGradient id="gradientImpact" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" style="stop-color:#16a34a;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#15803d;stop-opacity:0.95" />
+                        </radialGradient>
+                        
+                        <radialGradient id="gradientPassion" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" style="stop-color:#e53935;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#c62828;stop-opacity:0.95" />
+                        </radialGradient>
+                        
+                        <radialGradient id="gradientCompetences" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" style="stop-color:#ff9e0b;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.95" />
+                        </radialGradient>
+                        
+                        <radialGradient id="gradientMission" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" style="stop-color:#0284c7;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#0369a1;stop-opacity:0.95" />
+                        </radialGradient>
+                        
+                        <radialGradient id="gradientProfession" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#059669;stop-opacity:0.95" />
+                        </radialGradient>
+                        
+                        <radialGradient id="gradientCenter" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" style="stop-color:#455a64;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#37474f;stop-opacity:1" />
+                        </radialGradient>
+                    </defs>
+
+                    <!-- Niveau 1 : Cercles inter (en bas) -->
+                    <g class="inter-circle vision" style="z-index: 1;">
+                        <circle cx="600" cy="500" r="220" opacity="0.85"/>
+                        <text x="600" y="500" text-anchor="middle" class="inter-title">VISION</text>
+                    </g>
+
+                    <g class="inter-circle projets" style="z-index: 1;">
+                        <circle cx="1200" cy="500" r="220" opacity="0.85"/>
+                        <text x="1200" y="500" text-anchor="middle" class="inter-title">PROJETS</text>
+                    </g>
+
+                    <g class="inter-circle expertise" style="z-index: 1;">
+                        <circle cx="1200" cy="900" r="220" opacity="0.85"/>
+                        <text x="1200" y="900" text-anchor="middle" class="inter-title">EXPERTISE</text>
+                    </g>
+
+                    <g class="inter-circle impact" style="z-index: 1;">
+                        <circle cx="600" cy="900" r="220" opacity="0.85"/>
+                        <text x="600" y="900" text-anchor="middle" class="inter-title">IMPACT</text>
+                    </g>
+
+                    <!-- Niveau 2 : Cercles principaux (au milieu) -->
+                    <g class="main-circle passion" style="z-index: 2;">
+                        <circle cx="900" cy="250" r="250" opacity="0.95"/>
+                        <text x="900" y="250" text-anchor="middle" class="circle-title">PASSION</text>
+                    </g>
+
+                    <g class="main-circle competences" style="z-index: 2;">
+                        <circle cx="1500" cy="700" r="250" opacity="0.95"/>
+                        <text x="1500" y="700" text-anchor="middle" class="circle-title">COMPÉTENCES</text>
+                    </g>
+
+                    <g class="main-circle mission" style="z-index: 2;">
+                        <circle cx="900" cy="1150" r="250" opacity="0.95"/>
+                        <text x="900" y="1150" text-anchor="middle" class="circle-title">MISSION</text>
+                    </g>
+
+                    <g class="main-circle profession" style="z-index: 2;">
+                        <circle cx="300" cy="700" r="250" opacity="0.95"/>
+                        <text x="300" y="700" text-anchor="middle" class="circle-title">PROFESSION</text>
+                    </g>
+
+                    <!-- Niveau 3 : Cercle central (au dessus de tout) -->
+                    <g class="center-circle" style="z-index: 3;">
+                        <circle cx="900" cy="700" r="245"/>
+                        <text x="900" y="700" text-anchor="middle" class="center-title">PROFIL</text>
+                    </g>
+                </svg>
+            </div>
+
+            <footer class="main-footer">
+                <div class="contact-info">
+                    <p>📧 youssefbenjazia36@gmail.com</p>
+                    <a href="https://www.linkedin.com/in/youssef-ben-jazia-2b2aa4383/" target="_blank" rel="noopener noreferrer" class="linkedin-link">
+                        <svg class="linkedin-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                        </svg>
+                        LinkedIn
+                    </a>
+                </div>
+            </footer>
+        </div>
+    </div>               
+    
+    <script>
+        // Génération des étoiles
+        function generateStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 50;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        generateStars();
+
+        /**
+         * Fonction de navigation avec effet zoom élégant
+         */
+        function navigateWithZoom(event, url, pageName, color, customX = null, customY = null) {
+            // Empêcher la navigation par défaut
+            event.preventDefault();
+            event.stopPropagation();
+            
+            // Récupérer les éléments
+            const overlay = document.getElementById('transitionOverlay');
+            const zoomCircle = document.getElementById('zoomCircle');
+            const blurOverlay = document.getElementById('blurOverlay');
+            const loadingText = document.getElementById('loadingText');
+            
+            // Obtenir la position du clic
+            const clickX = customX !== null ? customX : event.clientX;
+            const clickY = customY !== null ? customY : event.clientY;
+            
+            // Calculer la taille nécessaire pour couvrir tout l'écran
+            const maxDistance = Math.max(
+                Math.hypot(clickX, clickY),
+                Math.hypot(window.innerWidth - clickX, clickY),
+                Math.hypot(clickX, window.innerHeight - clickY),
+                Math.hypot(window.innerWidth - clickX, window.innerHeight - clickY)
+            );
+            
+            const circleSize = maxDistance * 2.5;
+            
+            // Configurer le cercle de zoom
+            zoomCircle.style.left = clickX + 'px';
+            zoomCircle.style.top = clickY + 'px';
+            zoomCircle.style.width = '100px';
+            zoomCircle.style.height = '100px';
+            zoomCircle.style.background = `radial-gradient(circle, ${color}, ${adjustColor(color, -30)})`;
+            
+            // Configurer le texte de chargement
+            loadingText.textContent = pageName;
+            loadingText.style.display = 'block';
+            
+            // Activer l'overlay
+            overlay.classList.add('active');
+            
+            // Phase 1 : Zoom IN
+            requestAnimationFrame(() => {
+                blurOverlay.classList.add('active');
+                
+                setTimeout(() => {
+                    zoomCircle.style.width = circleSize + 'px';
+                    zoomCircle.style.height = circleSize + 'px';
+                    zoomCircle.classList.add('expanding');
+                    loadingText.classList.add('active');
+                }, 50);
+            });
+            
+            // Phase 2 : Navigation
+            setTimeout(() => {
+                window.location.href = url;
+            }, 800);
+        }
+        
+        /**
+         * Fonction utilitaire pour ajuster la luminosité d'une couleur
+         */
+        function adjustColor(color, amount) {
+            if (color.startsWith('#')) {
+                let hex = color.replace('#', '');
+                if (hex.length === 3) {
+                    hex = hex.split('').map(c => c + c).join('');
+                }
+                
+                let r = parseInt(hex.substr(0, 2), 16);
+                let g = parseInt(hex.substr(2, 2), 16);
+                let b = parseInt(hex.substr(4, 2), 16);
+                
+                r = Math.max(0, Math.min(255, r + amount));
+                g = Math.max(0, Math.min(255, g + amount));
+                b = Math.max(0, Math.min(255, b + amount));
+                
+                return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+            }
+            return color;
+        }
+
+        // Navigation entre les pages avec les cercles
+        document.addEventListener('DOMContentLoaded', () => {
+            const allGroups = document.querySelectorAll('g[class*="circle"]');
+            let currentHoveredGroup = null;
+
+            const scaleFactors = {
+                'main-circle': 1.18,
+                'inter-circle': 1.16,
+                'center-circle': 1.22
+            };
+
+            // Fonction pour replacer un cercle dans l'ordre hiérarchique avec animation fluide
+            function repositionCircle(group) {
+                if (currentHoveredGroup === group) {
+                    return;
+                }
+                
+                const svg = group.parentNode;
+                const allCircles = Array.from(svg.querySelectorAll('g[class*="circle"]'));
+                
+                const interCircles = allCircles.filter(g => g.classList.contains('inter-circle'));
+                const mainCircles = allCircles.filter(g => g.classList.contains('main-circle'));
+                const centerCircle = allCircles.find(g => g.classList.contains('center-circle'));
+                
+                let insertBefore = null;
+                
+                if (group.classList.contains('inter-circle')) {
+                    insertBefore = mainCircles[0] || centerCircle;
+                } else if (group.classList.contains('main-circle')) {
+                    insertBefore = centerCircle;
+                }
+                
+                const needsRepositioning = insertBefore ? group.nextSibling !== insertBefore : svg.lastChild !== group;
+                
+                if (needsRepositioning) {
+                    group.classList.add('repositioning');
+                    
+                    setTimeout(() => {
+                        if (insertBefore) {
+                            svg.insertBefore(group, insertBefore);
+                        } else {
+                            svg.appendChild(group);
+                        }
+                        
+                        setTimeout(() => {
+                            group.classList.remove('repositioning');
+                        }, 350);
+                    }, 50);
+                }
+            }
+
+            allGroups.forEach(group => {
+                const circle = group.querySelector('circle');
+                const text = group.querySelector('text');
+
+                // Définir l'origine de la transformation au centre du cercle
+                const cx = circle.getAttribute('cx');
+                const cy = circle.getAttribute('cy');
+                group.style.transformOrigin = `${cx}px ${cy}px`;
+
+                // Configuration des pages avec les couleurs exactes des cercles
+                const pages = {
+                    'vision': { url: 'vision-carriere.html', name: 'VISION', color: '#ea580c' },
+                    'projets': { url: 'projets-innovants.html', name: 'PROJETS', color: '#9333ea' },
+                    'expertise': { url: 'expertise-technique.html', name: 'EXPERTISE', color: '#0891b2' },
+                    'impact': { url: 'impact-environnemental.html', name: 'IMPACT', color: '#16a34a' },
+                    'passion': { url: 'passion.html', name: 'PASSION', color: '#e53935' },
+                    'competences': { url: 'competences.html', name: 'COMPÉTENCES', color: '#ff9e0b' },
+                    'mission': { url: 'mission.html', name: 'MISSION', color: '#0284c7' },
+                    'profession': { url: 'profession.html', name: 'PROFESSION', color: '#10b981' },
+                    'center-circle': { url: 'profil.html', name: 'PROFIL', color: '#455a64' }
+                };
+
+                // Ajouter la navigation au clic
+                group.style.cursor = 'pointer';
+                group.addEventListener('click', (e) => {
+                    // Trouver quelle classe correspond à ce groupe
+                    for (const [className, pageData] of Object.entries(pages)) {
+                        if (group.classList.contains(className)) {
+                            // Obtenir la position du cercle SVG dans la viewport
+                            const rect = circle.getBoundingClientRect();
+                            const centerX = rect.left + rect.width / 2;
+                            const centerY = rect.top + rect.height / 2;
+                            
+                            navigateWithZoom(e, pageData.url, pageData.name, pageData.color, centerX, centerY);
+                            break;
+                        }
+                    }
+                });
+
+                group.addEventListener('mouseenter', () => {
+                    currentHoveredGroup = group;
+                    group.classList.remove('repositioning');
+                    group.parentNode.appendChild(group);
+
+                    requestAnimationFrame(() => {
+                        const cls = [...group.classList].find(c => scaleFactors[c]);
+                        const scale = scaleFactors[cls] || 1.15;
+                        group.style.transform = `scale(${scale})`;
+                    });
+                });
+
+                group.addEventListener('mouseleave', () => {
+                    if (currentHoveredGroup === group) {
+                        currentHoveredGroup = null;
+                    }
+                    
+                    requestAnimationFrame(() => {
+                        group.style.transform = 'scale(1)';
+                    });
+
+                    setTimeout(() => {
+                        repositionCircle(group);
+                    }, 950);
+                });
+            });
+        });
+
+        // Gérer le bouton retour du navigateur
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                const overlay = document.getElementById('transitionOverlay');
+                overlay.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
+
+        // Gérer le bouton retour du navigateur
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                const overlay = document.getElementById('transitionOverlay');
+                overlay.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

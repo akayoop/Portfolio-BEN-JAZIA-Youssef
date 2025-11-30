@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impact Environnemental - BEN JAZIA Youssef</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        :root {
+            --space-dark: #0a0118;
+            --space-purple: #2d1b4e;
+            --nebula-blue: #1e3a8a;
+            --nebula-pink: #ec4899;
+            --star-white: #ffffff;
+            --green-earth: #10b981;
+            --cyan-glow: #22d3ee;
+            --violet-glow: #a78bfa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(ellipse at center, #064e3b 0%, #022c22 50%, #001a14 100%);
+            color: var(--star-white);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Étoiles animées */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+        
+        .star:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .star:nth-child(2) { top: 40%; left: 20%; animation-delay: 0.5s; }
+        .star:nth-child(3) { top: 60%; left: 30%; animation-delay: 1s; }
+        .star:nth-child(4) { top: 80%; left: 40%; animation-delay: 1.5s; }
+        .star:nth-child(5) { top: 30%; left: 50%; animation-delay: 2s; }
+        .star:nth-child(6) { top: 50%; left: 60%; animation-delay: 2.5s; }
+        .star:nth-child(7) { top: 70%; left: 70%; animation-delay: 0.8s; }
+        .star:nth-child(8) { top: 90%; left: 80%; animation-delay: 1.3s; }
+        .star:nth-child(9) { top: 15%; left: 85%; animation-delay: 1.8s; }
+        .star:nth-child(10) { top: 45%; left: 15%; animation-delay: 2.3s; }
+        .star:nth-child(11) { top: 65%; left: 90%; animation-delay: 0.3s; }
+        .star:nth-child(12) { top: 85%; left: 25%; animation-delay: 1.1s; }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+        
+        /* Nébuleuse flottante */
+        .nebula {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .nebula-1 {
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.3), transparent);
+            top: -200px;
+            right: -200px;
+            animation: float-nebula 20s infinite ease-in-out;
+        }
+        
+        .nebula-2 {
+            background: radial-gradient(circle, rgba(6, 95, 70, 0.4), transparent);
+            bottom: -200px;
+            left: -200px;
+            animation: float-nebula 25s infinite ease-in-out reverse;
+        }
+        
+        @keyframes float-nebula {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(50px, -80px) rotate(120deg); }
+            66% { transform: translate(-30px, 60px) rotate(240deg); }
+        }
+        
+        .page-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .back-button {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: rgba(16, 185, 129, 0.15);
+            backdrop-filter: blur(10px);
+            color: var(--green-earth);
+            border: 2px solid rgba(16, 185, 129, 0.4);
+            padding: 0.875rem 1.75rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 100;
+        }
+        
+        .back-button:hover {
+            background: var(--green-earth);
+            color: white;
+            transform: translateX(-8px) scale(1.05);
+            box-shadow: 0 0 40px rgba(16, 185, 129, 0.6);
+        }
+        
+        /* Header avec planète */
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .page-title {
+            font-size: 4.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+            text-shadow: 
+                0 0 20px var(--green-earth),
+                0 0 40px var(--green-earth),
+                0 0 60px var(--green-earth);
+            animation: glow-pulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes glow-pulse {
+            0%, 100% {
+                text-shadow: 
+                    0 0 20px var(--green-earth),
+                    0 0 40px var(--green-earth),
+                    0 0 60px var(--green-earth);
+            }
+            50% {
+                text-shadow: 
+                    0 0 30px var(--green-earth),
+                    0 0 60px var(--green-earth),
+                    0 0 90px var(--green-earth);
+            }
+        }
+        
+        /* Planète animée - vraie Terre 3D */
+        .planet-container {
+            display: flex;
+            justify-content: center;
+            margin: 3rem 0;
+            perspective: 1200px;
+            height: 300px;
+        }
+        
+        #earth-canvas {
+            width: 300px !important;
+            height: 300px !important;
+            cursor: grab;
+        }
+        
+        #earth-canvas:active {
+            cursor: grabbing;
+        }
+        
+        /* Anneaux de la planète */
+        .planet-ring {
+            position: absolute;
+            width: 280px;
+            height: 80px;
+            border: 3px solid rgba(16, 185, 129, 0.3);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(75deg);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+            animation: pulse-ring 3s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-ring {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        /* Grille des blocs - 2x2 */
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        
+        .impact-bloc {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            padding: 3rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+        }
+        
+        .impact-bloc:nth-child(1) { animation-delay: 0.1s; }
+        .impact-bloc:nth-child(2) { animation-delay: 0.2s; }
+        .impact-bloc:nth-child(3) { animation-delay: 0.3s; }
+        .impact-bloc:nth-child(4) { animation-delay: 0.4s; }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        /* Aura colorée par bloc */
+        .impact-bloc::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top left, var(--bloc-glow), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            pointer-events: none;
+        }
+        
+        .impact-bloc:hover::before {
+            opacity: 1;
+        }
+        
+        .impact-bloc:hover {
+            transform: translateY(-16px) scale(1.02);
+            box-shadow: 
+                0 40px 100px rgba(0, 0, 0, 0.6),
+                0 0 60px var(--bloc-color);
+            border-color: var(--bloc-color);
+        }
+        
+        /* Couleurs uniques par bloc */
+        .impact-bloc:nth-child(1) {
+            --bloc-color: #10b981;
+            --bloc-glow: rgba(16, 185, 129, 0.2);
+        }
+        
+        .impact-bloc:nth-child(2) {
+            --bloc-color: #22d3ee;
+            --bloc-glow: rgba(34, 211, 238, 0.2);
+        }
+        
+        .impact-bloc:nth-child(3) {
+            --bloc-color: #a78bfa;
+            --bloc-glow: rgba(167, 139, 250, 0.2);
+        }
+        
+        .impact-bloc:nth-child(4) {
+            --bloc-color: #facc15;
+            --bloc-glow: rgba(250, 204, 21, 0.2);
+        }
+        
+        .bloc-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .bloc-icon {
+            font-size: 3.5rem;
+            filter: drop-shadow(0 0 25px var(--bloc-color));
+            animation: icon-float 4s ease-in-out infinite;
+        }
+        
+        @keyframes icon-float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+        
+        .bloc-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            line-height: 1.2;
+        }
+        
+        .bloc-list {
+            list-style: none;
+        }
+        
+        .bloc-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--bloc-color);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        
+        .bloc-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(12px);
+            border-left-width: 6px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .bloc-item::before {
+            content: '●';
+            color: var(--bloc-color);
+            font-size: 1.5rem;
+            line-height: 1;
+            filter: drop-shadow(0 0 10px var(--bloc-color));
+        }
+        
+        .bloc-item p {
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.7;
+            flex: 1;
+            font-size: 1.05rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .impact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+            
+            .planet {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .planet-ring {
+                width: 210px;
+                height: 60px;
+            }
+            
+            .impact-bloc {
+                padding: 2rem;
+            }
+            
+            .bloc-icon {
+                font-size: 2.5rem;
+            }
+            
+            .bloc-title {
+                font-size: 1.5rem;
+            }
+            
+            .back-button {
+                top: 1rem;
+                left: 1rem;
+                padding: 0.75rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Étoiles -->
+    <div class="stars">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
+    
+    <!-- Nébuleuses -->
+    <div class="nebula nebula-1"></div>
+    <div class="nebula nebula-2"></div>
+    
+    <a href="index.html" class="back-button">← Retour</a>
+    
+    <div class="page-container">
+        <header class="page-header">
+            <h1 class="page-title">🌍 Impact Environnemental</h1>
+            
+            <!-- Planète animée - vraie Terre 3D avec Three.js -->
+            <div class="planet-container">
+                <canvas id="earth-canvas"></canvas>
+            </div>
+        </header>
+        
+        <!-- Grille 2x2 des blocs -->
+        <div class="impact-grid">
+            <!-- Bloc 1 -->
+            <div class="impact-bloc">
+                <div class="bloc-header">
+                    <span class="bloc-icon">🌱</span>
+                    <h2 class="bloc-title">Impact Environnemental</h2>
+                </div>
+                <ul class="bloc-list">
+                    <li class="bloc-item">
+                        <p>Réduction de la consommation énergétique sans perte de confort</p>
+                    </li>
+                    <li class="bloc-item">
+                        <p>Optimisation de la performance globale des installations</p>
+                    </li>
+                    <li class="bloc-item">
+                        <p>Contribution à la diminution des émissions de gaz à effet de serre</p>
+                    </li>
+                    <li class="bloc-item">
+                        <p>Intégration de solutions plus sobres et plus durables</p>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Bloc 2 -->
+            <div class="impact-bloc">
+                <div class="bloc-header">
+                    <span class="bloc-icon">♻️</span>
+                    <h2 class="bloc-title">Économie Circulaire & Sobriété</h2>
+                </div>
+                <ul class="bloc-list">
+                    <li class="bloc-item">
+                        <p>Promotion de modèles énergétiques durables</p>
+                    </li>
+                    <li class="bloc-item">
+                        <p>Mise en avant d'une utilisation raisonnée des ressources</p>
+                    </li>
+                    <li class="bloc-item">
+                        <p>Adoption de pratiques sobres dans les projets et solutions</p>
+                    </li>
+                    <li class="bloc-item">
+                        <p>Sensibilisation à l'efficacité et au non-gaspillage</p>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Bloc 3 -->
+            <div class="impact-bloc">
+                <div class="bloc-header">
+                    <span class="bloc-icon">🏗️</span>
+                    <h2 class="bloc-title">Construction Durable</h2>
+                </div>
+                <ul class="bloc-list">
+                    <li class="bloc-item">
+                        <p>Intégration des principes écologiques dès la conception</p>
+                    </li>
+                    <li class="bloc-item">
+                        <p>Choix de solutions énergétiques adaptées et performantes</p>
+                    </li>
+                    <li class="bloc-item">
+                        <p>Réduction de l'impact carbone des systèmes installés</p>
+                    </li>
+                    <li class="bloc-item">
+                        <p>Amélioration du confort tout en limitant l'empreinte environnementale</p>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Bloc 4 -->
+            <div class="impact-bloc">
+                <div class="bloc-header">
+                    <span class="bloc-icon">⚡</span>
+                    <h2 class="bloc-title">Optimisation & Performance</h2>
+                </div>
+                <ul class="bloc-list">
+                    <li class="bloc-item">
+                        <p>Conception de systèmes CVC plus efficaces</p>
+                    </li>
+                    <li class="bloc-item">
+                        <p>Réduction des consommations énergétiques globales</p>
+                    </li>
+                    <li class="bloc-item">
+                        <p>Suivi et optimisation continue des installations</p>
+                    </li>
+                    <li class="bloc-item">
+                        <p>Recherche d'une amélioration mesurable sur la performance réelle</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Configuration de la scène Three.js
+        const canvas = document.getElementById('earth-canvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ 
+            canvas: canvas, 
+            alpha: true, 
+            antialias: true 
+        });
+        
+        renderer.setSize(300, 300);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        camera.position.z = 3;
+        
+        // Création de la Terre
+        const earthGeometry = new THREE.SphereGeometry(1, 64, 64);
+        
+        // Création d'une texture procédurale pour la Terre
+        const canvas2D = document.createElement('canvas');
+        canvas2D.width = 2048;
+        canvas2D.height = 1024;
+        const ctx = canvas2D.getContext('2d');
+        
+        // Océans (bleu profond avec dégradé)
+        const gradient = ctx.createRadialGradient(1024, 512, 0, 1024, 512, 1024);
+        gradient.addColorStop(0, '#2563eb');
+        gradient.addColorStop(0.5, '#1e40af');
+        gradient.addColorStop(1, '#1e3a8a');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 2048, 1024);
+        
+        // Couleur des continents (vert forêt)
+        ctx.fillStyle = '#15803d';
+        
+        // AMÉRIQUE DU NORD
+        ctx.beginPath();
+        ctx.moveTo(300, 280);
+        ctx.quadraticCurveTo(250, 250, 280, 200);
+        ctx.quadraticCurveTo(320, 180, 360, 200);
+        ctx.quadraticCurveTo(400, 220, 420, 260);
+        ctx.quadraticCurveTo(450, 300, 440, 350);
+        ctx.quadraticCurveTo(420, 380, 380, 390);
+        ctx.quadraticCurveTo(350, 400, 320, 380);
+        ctx.quadraticCurveTo(280, 350, 300, 280);
+        ctx.fill();
+        
+        // AMÉRIQUE CENTRALE
+        ctx.beginPath();
+        ctx.moveTo(350, 420);
+        ctx.lineTo(380, 440);
+        ctx.lineTo(370, 470);
+        ctx.lineTo(340, 460);
+        ctx.closePath();
+        ctx.fill();
+        
+        // AMÉRIQUE DU SUD
+        ctx.beginPath();
+        ctx.moveTo(360, 490);
+        ctx.quadraticCurveTo(390, 480, 410, 510);
+        ctx.quadraticCurveTo(420, 580, 410, 650);
+        ctx.quadraticCurveTo(390, 720, 360, 750);
+        ctx.quadraticCurveTo(330, 760, 310, 740);
+        ctx.quadraticCurveTo(290, 700, 300, 650);
+        ctx.quadraticCurveTo(310, 580, 320, 530);
+        ctx.quadraticCurveTo(330, 500, 360, 490);
+        ctx.fill();
+        
+        // GROENLAND
+        ctx.beginPath();
+        ctx.ellipse(500, 150, 60, 80, 0.3, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // EUROPE
+        ctx.beginPath();
+        ctx.moveTo(950, 280);
+        ctx.quadraticCurveTo(980, 260, 1020, 270);
+        ctx.quadraticCurveTo(1050, 280, 1060, 310);
+        ctx.quadraticCurveTo(1070, 340, 1050, 360);
+        ctx.quadraticCurveTo(1020, 380, 980, 370);
+        ctx.quadraticCurveTo(950, 360, 940, 330);
+        ctx.quadraticCurveTo(935, 300, 950, 280);
+        ctx.fill();
+        
+        // AFRIQUE
+        ctx.beginPath();
+        ctx.moveTo(980, 400);
+        ctx.quadraticCurveTo(1020, 390, 1060, 410);
+        ctx.quadraticCurveTo(1090, 440, 1100, 490);
+        ctx.quadraticCurveTo(1110, 560, 1100, 620);
+        ctx.quadraticCurveTo(1080, 680, 1040, 710);
+        ctx.quadraticCurveTo(1000, 720, 960, 700);
+        ctx.quadraticCurveTo(930, 670, 920, 620);
+        ctx.quadraticCurveTo(915, 560, 930, 500);
+        ctx.quadraticCurveTo(950, 430, 980, 400);
+        ctx.fill();
+        
+        // ASIE (partie ouest - Moyen-Orient et Russie ouest)
+        ctx.beginPath();
+        ctx.moveTo(1080, 250);
+        ctx.quadraticCurveTo(1150, 230, 1220, 250);
+        ctx.quadraticCurveTo(1280, 270, 1320, 300);
+        ctx.quadraticCurveTo(1340, 330, 1330, 370);
+        ctx.quadraticCurveTo(1300, 390, 1250, 380);
+        ctx.quadraticCurveTo(1200, 370, 1160, 360);
+        ctx.quadraticCurveTo(1120, 340, 1100, 310);
+        ctx.quadraticCurveTo(1085, 280, 1080, 250);
+        ctx.fill();
+        
+        // ASIE (partie centrale - Inde et Asie du Sud-Est)
+        ctx.beginPath();
+        ctx.moveTo(1250, 420);
+        ctx.quadraticCurveTo(1290, 410, 1330, 430);
+        ctx.quadraticCurveTo(1360, 460, 1370, 500);
+        ctx.quadraticCurveTo(1375, 540, 1360, 570);
+        ctx.quadraticCurveTo(1330, 590, 1290, 580);
+        ctx.quadraticCurveTo(1250, 560, 1230, 520);
+        ctx.quadraticCurveTo(1225, 470, 1250, 420);
+        ctx.fill();
+        
+        // ASIE (partie est - Chine et Japon)
+        ctx.beginPath();
+        ctx.moveTo(1380, 280);
+        ctx.quadraticCurveTo(1450, 270, 1510, 290);
+        ctx.quadraticCurveTo(1560, 320, 1580, 370);
+        ctx.quadraticCurveTo(1590, 420, 1570, 470);
+        ctx.quadraticCurveTo(1540, 500, 1490, 490);
+        ctx.quadraticCurveTo(1440, 480, 1400, 450);
+        ctx.quadraticCurveTo(1370, 410, 1365, 360);
+        ctx.quadraticCurveTo(1368, 310, 1380, 280);
+        ctx.fill();
+        
+        // JAPON (îles)
+        ctx.beginPath();
+        ctx.ellipse(1620, 330, 25, 60, 0.4, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // AUSTRALIE
+        ctx.beginPath();
+        ctx.moveTo(1550, 680);
+        ctx.quadraticCurveTo(1610, 670, 1660, 690);
+        ctx.quadraticCurveTo(1700, 720, 1700, 760);
+        ctx.quadraticCurveTo(1690, 800, 1650, 820);
+        ctx.quadraticCurveTo(1600, 830, 1550, 810);
+        ctx.quadraticCurveTo(1510, 780, 1510, 740);
+        ctx.quadraticCurveTo(1515, 700, 1550, 680);
+        ctx.fill();
+        
+        // NOUVELLE-ZÉLANDE
+        ctx.beginPath();
+        ctx.ellipse(1780, 820, 20, 45, 0.2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(1800, 880, 18, 35, 0.1, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // ANTARCTIQUE (bord sud)
+        ctx.fillStyle = '#e0f2fe';
+        ctx.fillRect(0, 920, 2048, 104);
+        
+        // Calotte glaciaire arctique (bord nord)
+        ctx.fillRect(0, 0, 2048, 80);
+        
+        // Nuages blancs semi-transparents
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+        const cloudPatterns = [
+            {x: 200, y: 300, w: 80, h: 40},
+            {x: 500, y: 400, w: 100, h: 50},
+            {x: 800, y: 250, w: 90, h: 45},
+            {x: 1100, y: 500, w: 110, h: 55},
+            {x: 1400, y: 350, w: 85, h: 42},
+            {x: 1700, y: 600, w: 95, h: 48},
+            {x: 300, y: 650, w: 75, h: 38},
+            {x: 900, y: 700, w: 88, h: 44},
+            {x: 1500, y: 150, w: 92, h: 46},
+            {x: 600, y: 550, w: 78, h: 39}
+        ];
+        
+        cloudPatterns.forEach(cloud => {
+            ctx.beginPath();
+            ctx.ellipse(cloud.x, cloud.y, cloud.w, cloud.h, Math.random() * 0.5, 0, Math.PI * 2);
+            ctx.fill();
+        });
+        
+        const texture = new THREE.CanvasTexture(canvas2D);
+        texture.needsUpdate = true;
+        
+        // Matériau avec éclairage
+        const earthMaterial = new THREE.MeshPhongMaterial({
+            map: texture,
+            bumpScale: 0.05,
+            specular: new THREE.Color('#1e3a8a'),
+            shininess: 10
+        });
+        
+        const earth = new THREE.Mesh(earthGeometry, earthMaterial);
+        scene.add(earth);
+        
+        // Atmosphère (halo lumineux)
+        const atmosphereGeometry = new THREE.SphereGeometry(1.05, 64, 64);
+        const atmosphereMaterial = new THREE.MeshBasicMaterial({
+            color: 0x3b82f6,
+            transparent: true,
+            opacity: 0.15,
+            side: THREE.BackSide
+        });
+        const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
+        scene.add(atmosphere);
+        
+        // Lumière principale (soleil)
+        const light = new THREE.DirectionalLight(0xffffff, 1.2);
+        light.position.set(5, 3, 5);
+        scene.add(light);
+        
+        // Lumière ambiante
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+        scene.add(ambientLight);
+        
+        // Lumière d'appoint (pour éclairer le côté sombre)
+        const fillLight = new THREE.DirectionalLight(0x8888ff, 0.3);
+        fillLight.position.set(-5, 0, -5);
+        scene.add(fillLight);
+        
+        // Animation
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetRotationX = 0;
+        let targetRotationY = 0;
+        
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+            mouseY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+        });
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Rotation automatique lente
+            earth.rotation.y += 0.001;
+            atmosphere.rotation.y += 0.001;
+            
+            // Interaction souris (très subtile)
+            targetRotationX = mouseY * 0.1;
+            targetRotationY = mouseX * 0.1;
+            
+            earth.rotation.x += (targetRotationX - earth.rotation.x) * 0.05;
+            earth.rotation.z += (targetRotationY - earth.rotation.z) * 0.05;
+            
+            // Légère oscillation verticale
+            earth.position.y = Math.sin(Date.now() * 0.0005) * 0.05;
+            atmosphere.position.y = earth.position.y;
+            
+            renderer.render(scene, camera);
+        }
+        
+        animate();
+        
+        // Responsive
+        window.addEventListener('resize', () => {
+            if (window.innerWidth <= 768) {
+                renderer.setSize(200, 200);
+            } else {
+                renderer.setSize(300, 300);
+            }
+        });
+    </script>
+</body>
+</html>

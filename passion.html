@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passion - BEN JAZIA Youssef</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --passion-red: #e53935;
+            --passion-dark: #c62828;
+            --passion-light: #ef5350;
+            --dark-bg: #1a0a0a;
+            --darker-bg: #0d0404;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(ellipse at center, #1a0a0a 0%, #0d0404 50%, #000000 100%);
+            color: white;
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Effet flammes animées en arrière-plan */
+        .flames-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .flame {
+            position: absolute;
+            width: 200px;
+            height: 300px;
+            background: radial-gradient(ellipse at bottom, 
+                rgba(229, 57, 53, 0.4) 0%, 
+                rgba(229, 57, 53, 0.2) 30%,
+                rgba(239, 83, 80, 0.1) 60%,
+                transparent 100%);
+            filter: blur(40px);
+            animation: flameRise 8s infinite ease-in-out;
+            opacity: 0.6;
+        }
+        
+        .flame:nth-child(1) {
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .flame:nth-child(2) {
+            left: 30%;
+            animation-delay: 2s;
+            animation-duration: 10s;
+        }
+        
+        .flame:nth-child(3) {
+            left: 50%;
+            animation-delay: 4s;
+            animation-duration: 9s;
+        }
+        
+        .flame:nth-child(4) {
+            left: 70%;
+            animation-delay: 1s;
+            animation-duration: 11s;
+        }
+        
+        .flame:nth-child(5) {
+            left: 90%;
+            animation-delay: 3s;
+            animation-duration: 8.5s;
+        }
+        
+        @keyframes flameRise {
+            0% {
+                bottom: -300px;
+                transform: scale(1) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.6;
+            }
+            80% {
+                opacity: 0.4;
+            }
+            100% {
+                bottom: 100%;
+                transform: scale(1.5) rotate(20deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Particules incandescentes */
+        .embers {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .ember {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--passion-red);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--passion-red);
+            animation: emberFloat 15s infinite ease-in-out;
+        }
+        
+        @keyframes emberFloat {
+            0% {
+                bottom: 0;
+                opacity: 0;
+                transform: translateX(0) scale(0.5);
+            }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 0.8;
+            }
+            100% {
+                bottom: 100%;
+                opacity: 0;
+                transform: translateX(100px) scale(0.2);
+            }
+        }
+        
+        /* Effet de chaleur ondulante */
+        .heat-wave {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(229, 57, 53, 0.03) 2px,
+                rgba(229, 57, 53, 0.03) 4px
+            );
+            z-index: 0;
+            pointer-events: none;
+            animation: heatDistortion 3s infinite ease-in-out;
+        }
+        
+        @keyframes heatDistortion {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(4px);
+            }
+        }
+        
+        .page-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Bouton retour style feu */
+        .back-button {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: linear-gradient(135deg, var(--passion-red) 0%, var(--passion-dark) 100%);
+            color: white;
+            border: 2px solid rgba(229, 57, 53, 0.5);
+            padding: 0.875rem 1.75rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 
+                0 8px 32px rgba(229, 57, 53, 0.4),
+                inset 0 0 20px rgba(255, 255, 255, 0.1);
+            z-index: 100;
+        }
+        
+        .back-button:hover {
+            transform: translateX(-8px) scale(1.05);
+            box-shadow: 
+                0 12px 48px rgba(229, 57, 53, 0.6),
+                inset 0 0 30px rgba(255, 255, 255, 0.2),
+                0 0 60px rgba(229, 57, 53, 0.4);
+        }
+        
+        /* Header avec effet de feu */
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 5rem;
+            font-weight: 800;
+            background: linear-gradient(180deg, 
+                #fff 0%, 
+                var(--passion-light) 30%, 
+                var(--passion-red) 60%, 
+                var(--passion-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            text-shadow: 
+                0 0 40px rgba(229, 57, 53, 0.5);
+            animation: fireGlow 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(229, 57, 53, 0.6));
+        }
+        
+        @keyframes fireGlow {
+            0%, 100% {
+                filter: drop-shadow(0 0 30px rgba(229, 57, 53, 0.6)) brightness(1);
+            }
+            50% {
+                filter: drop-shadow(0 0 50px rgba(229, 57, 53, 0.8)) brightness(1.2);
+            }
+        }
+        
+        .page-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 400;
+        }
+        
+        /* Grille de cartes style braises */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .passion-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            padding: 3rem;
+            border: 2px solid rgba(229, 57, 53, 0.2);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+        }
+        
+        .passion-card:nth-child(1) { animation-delay: 0.1s; }
+        .passion-card:nth-child(2) { animation-delay: 0.2s; }
+        .passion-card:nth-child(3) { animation-delay: 0.3s; }
+        .passion-card:nth-child(4) { animation-delay: 0.4s; }
+        .passion-card:nth-child(5) { animation-delay: 0.5s; }
+        .passion-card:nth-child(6) { animation-delay: 0.6s; }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        /* Lueur intérieure de chaque carte */
+        .passion-card::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--card-glow), transparent 70%);
+            opacity: 0;
+            transform: translate(-50%, -50%);
+            transition: all 0.6s ease;
+        }
+        
+        .passion-card:hover::before {
+            width: 400px;
+            height: 400px;
+            opacity: 1;
+        }
+        
+        .passion-card:hover {
+            transform: translateY(-20px) scale(1.03);
+            box-shadow: 
+                0 40px 100px rgba(0, 0, 0, 0.6),
+                0 0 80px var(--card-color),
+                inset 0 0 60px rgba(229, 57, 53, 0.1);
+            border-color: var(--card-color);
+        }
+        
+        /* Couleurs uniques par carte */
+        .passion-card:nth-child(1) {
+            --card-color: #e53935;
+            --card-glow: rgba(229, 57, 53, 0.15);
+        }
+        
+        .passion-card:nth-child(2) {
+            --card-color: #ef5350;
+            --card-glow: rgba(239, 83, 80, 0.15);
+        }
+        
+        .passion-card:nth-child(3) {
+            --card-color: #f44336;
+            --card-glow: rgba(244, 67, 54, 0.15);
+        }
+        
+        .passion-card:nth-child(4) {
+            --card-color: #c62828;
+            --card-glow: rgba(198, 40, 40, 0.15);
+        }
+        
+        .passion-card:nth-child(5) {
+            --card-color: #d32f2f;
+            --card-glow: rgba(211, 47, 47, 0.15);
+        }
+        
+        .passion-card:nth-child(6) {
+            --card-color: #b71c1c;
+            --card-glow: rgba(183, 28, 28, 0.15);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(229, 57, 53, 0.2);
+        }
+        
+        .card-icon {
+            font-size: 3.5rem;
+            filter: drop-shadow(0 0 20px var(--card-color));
+            animation: iconPulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes iconPulse {
+            0%, 100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 20px var(--card-color));
+            }
+            50% {
+                transform: scale(1.1);
+                filter: drop-shadow(0 0 40px var(--card-color));
+            }
+        }
+        
+        .card-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: white;
+            line-height: 1.3;
+        }
+        
+        .passion-list {
+            list-style: none;
+        }
+        
+        .passion-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: rgba(229, 57, 53, 0.05);
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--card-color);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        
+        .passion-item::before {
+            content: '▸';
+            color: var(--card-color);
+            font-weight: bold;
+            font-size: 1.3rem;
+            line-height: 1;
+        }
+        
+        .passion-item:hover {
+            background: rgba(229, 57, 53, 0.15);
+            transform: translateX(12px);
+            border-left-width: 6px;
+            box-shadow: 0 8px 30px rgba(229, 57, 53, 0.3);
+        }
+        
+        .passion-item p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            flex: 1;
+            font-size: 1.05rem;
+        }
+        
+        /* Section citation avec effet de braise */
+        .quote-section {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            padding: 4rem;
+            border: 2px solid rgba(229, 57, 53, 0.3);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.7s backwards;
+        }
+        
+        .quote-section::before {
+            content: '"';
+            position: absolute;
+            top: 10px;
+            left: 30px;
+            font-size: 120px;
+            color: rgba(229, 57, 53, 0.2);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+        
+        .quote-section::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(229, 57, 53, 0.1) 0%, transparent 50%);
+            animation: rotateGlow 20s linear infinite;
+            z-index: 0;
+        }
+        
+        @keyframes rotateGlow {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .quote-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            font-style: italic;
+            color: white;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+        
+        .quote-author {
+            font-size: 1.125rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--passion-red) 0%, var(--passion-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 3rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.25rem;
+            }
+            
+            .passion-card {
+                padding: 2rem;
+            }
+            
+            .card-icon {
+                font-size: 2.5rem;
+            }
+            
+            .card-title {
+                font-size: 1.5rem;
+            }
+            
+            .back-button {
+                top: 1rem;
+                left: 1rem;
+                padding: 0.75rem 1.5rem;
+            }
+            
+            .quote-text {
+                font-size: 1.25rem;
+            }
+            
+            .quote-section {
+                padding: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .page-container {
+                padding: 1rem;
+            }
+            
+            .page-title {
+                font-size: 2.5rem;
+            }
+            
+            .passion-card {
+                padding: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Flammes animées en arrière-plan -->
+    <div class="flames-background">
+        <div class="flame"></div>
+        <div class="flame"></div>
+        <div class="flame"></div>
+        <div class="flame"></div>
+        <div class="flame"></div>
+    </div>
+    
+    <!-- Braises flottantes -->
+    <div class="embers" id="embers"></div>
+    
+    <!-- Effet de chaleur -->
+    <div class="heat-wave"></div>
+    
+    <a href="index.html" class="back-button">← Retour</a>
+    
+    <div class="page-container">
+        <header class="page-header">
+            <h1 class="page-title">🔥 Passion</h1>
+            <p class="page-subtitle">Ce qui m'anime et me fait avancer</p>
+        </header>
+        
+        <div class="content-grid">
+            <!-- Card 1: Transition Énergétique -->
+            <div class="passion-card">
+                <div class="card-header">
+                    <span class="card-icon">🌍</span>
+                    <h2 class="card-title">Transition Énergétique</h2>
+                </div>
+                <ul class="passion-list">
+                    <li class="passion-item">
+                        <p>Contribuer à un avenir énergétique durable et responsable</p>
+                    </li>
+                    <li class="passion-item">
+                        <p>Promouvoir la sobriété énergétique et l'efficacité</p>
+                    </li>
+                    <li class="passion-item">
+                        <p>Réduire l'empreinte environnementale des systèmes</p>
+                    </li>
+                    <li class="passion-item">
+                        <p>Participer à la lutte contre le changement climatique</p>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Card 2: Innovation -->
+            <div class="passion-card">
+                <div class="card-header">
+                    <span class="card-icon">⚙️</span>
+                    <h2 class="card-title">Innovation</h2>
+                </div>
+                <ul class="passion-list">
+                    <li class="passion-item">
+                        <p>Suivre l'évolution des technologies énergétiques</p>
+                    </li>
+                    <li class="passion-item">
+                        <p>Découvrir les innovations numériques et industrielles</p>
+                    </li>
+                    <li class="passion-item">
+                        <p>Explorer les solutions de stockage et d'efficacité énergétique</p>
+                    </li>
+                    <li class="passion-item">
+                        <p>M'intéresser à l'IA et aux systèmes intelligents</p>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Card 3: Science -->
+            <div class="passion-card">
+                <div class="card-header">
+                    <span class="card-icon">🔬</span>
+                    <h2 class="card-title">Science</h2>
+                </div>
+                <ul class="passion-list">
+                    <li class="passion-item">
+                        <p>Comprendre le fonctionnement des systèmes énergétiques</p>
+                    </li>
+                    <li class="passion-item">
+                        <p>Explorer les phénomènes thermiques et fluidiques</p>
+                    </li>
+                    <li class="passion-item">
+                        <p>Relier théorie scientifique et applications concrètes</p>
+                    </li>
+                    <li class="passion-item">
+                        <p>Observer et analyser le comportement réel des systèmes</p>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Card 4: Curiosité -->
+            <div class="passion-card">
+                <div class="card-header">
+                    <span class="card-icon">🔍</span>
+                    <h2 class="card-title">Curiosité</h2>
+                </div>
+                <ul class="passion-list">
+                    <li class="passion-item">
+                        <p>Apprendre chaque jour quelque chose de nouveau</p>
+                    </li>
+                    <li class="passion-item">
+                        <p>Approfondir mes connaissances en sciences</p>
+                    </li>
+                    <li class="passion-item">
+                        <p>Explorer des domaines variés pour élargir ma vision</p>
+                    </li>
+                    <li class="passion-item">
+                        <p>Nourrir ma curiosité naturelle pour comprendre le "pourquoi"</p>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Card 5: Jeux Vidéo -->
+            <div class="passion-card">
+                <div class="card-header">
+                    <span class="card-icon">🎮</span>
+                    <h2 class="card-title">Jeux Vidéo</h2>
+                </div>
+                <ul class="passion-list">
+                    <li class="passion-item">
+                        <p>Développer mon sens de la stratégie</p>
+                    </li>
+                    <li class="passion-item">
+                        <p>Stimuler ma logique et ma prise de décision rapide</p>
+                    </li>
+                    <li class="passion-item">
+                        <p>Améliorer ma vision systémique via les simulations</p>
+                    </li>
+                    <li class="passion-item">
+                        <p>Équilibrer compétition et créativité</p>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Card 6: Sport -->
+            <div class="passion-card">
+                <div class="card-header">
+                    <span class="card-icon">🏃</span>
+                    <h2 class="card-title">Sport</h2>
+                </div>
+                <ul class="passion-list">
+                    <li class="passion-item">
+                        <p>Cultiver discipline et persévérance</p>
+                    </li>
+                    <li class="passion-item">
+                        <p>Entretenir un équilibre entre esprit et corps</p>
+                    </li>
+                    <li class="passion-item">
+                        <p>Apprendre le respect et la régularité</p>
+                    </li>
+                    <li class="passion-item">
+                        <p>Repousser mes limites pour progresser constamment</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Quote Section -->
+        <div class="quote-section">
+            <p class="quote-text">
+                La passion est l'énergie qui nous permet de transformer nos rêves en réalité.
+            </p>
+            <p class="quote-author">— Youssef Ben Jazia</p>
+        </div>
+    </div>
+    
+    <script>
+        // Génération des braises flottantes
+        function generateEmbers() {
+            const container = document.getElementById('embers');
+            const emberCount = 40;
+            
+            for (let i = 0; i < emberCount; i++) {
+                const ember = document.createElement('div');
+                ember.className = 'ember';
+                ember.style.left = Math.random() * 100 + '%';
+                ember.style.animationDelay = Math.random() * 15 + 's';
+                ember.style.animationDuration = (10 + Math.random() * 10) + 's';
+                container.appendChild(ember);
+            }
+        }
+        
+        generateEmbers();
+    </script>
+</body>
+</html>

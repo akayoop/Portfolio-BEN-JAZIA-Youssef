@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vision Carrière - BEN JAZIA Youssef</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --vision-orange: #ea580c;
+            --vision-dark: #c2410c;
+            --vision-light: #fb923c;
+            --dark-bg: #1a0f0a;
+            --darker-bg: #0d0604;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(ellipse at top, #1a0f0a 0%, #0d0604 50%, #000000 100%);
+            color: white;
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Horizon lumineux animé */
+        .horizon-glow {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(to top, 
+                rgba(234, 88, 12, 0.3) 0%,
+                rgba(234, 88, 12, 0.15) 30%,
+                transparent 100%);
+            z-index: 0;
+            pointer-events: none;
+            animation: horizonPulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes horizonPulse {
+            0%, 100% { opacity: 0.6; transform: scaleY(1); }
+            50% { opacity: 1; transform: scaleY(1.1); }
+        }
+        
+        /* Rayons de lumière diagonal */
+        .light-rays {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .ray {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                transparent 0%, 
+                rgba(234, 88, 12, 0.2) 50%,
+                transparent 100%);
+            animation: rayMove 15s linear infinite;
+            transform-origin: top center;
+        }
+        
+        .ray:nth-child(1) { left: 10%; animation-delay: 0s; transform: rotate(5deg); }
+        .ray:nth-child(2) { left: 25%; animation-delay: 3s; transform: rotate(-3deg); }
+        .ray:nth-child(3) { left: 40%; animation-delay: 6s; transform: rotate(7deg); }
+        .ray:nth-child(4) { left: 55%; animation-delay: 2s; transform: rotate(-5deg); }
+        .ray:nth-child(5) { left: 70%; animation-delay: 4s; transform: rotate(4deg); }
+        .ray:nth-child(6) { left: 85%; animation-delay: 7s; transform: rotate(-6deg); }
+        
+        @keyframes rayMove {
+            0% { opacity: 0; transform: translateY(-50%) rotate(var(--rotation, 0deg)); }
+            20% { opacity: 0.3; }
+            80% { opacity: 0.2; }
+            100% { opacity: 0; transform: translateY(0) rotate(var(--rotation, 0deg)); }
+        }
+        
+        /* Particules dorées flottantes */
+        .golden-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .golden-particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--vision-light);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--vision-light);
+            animation: floatGolden 20s infinite ease-in-out;
+        }
+        
+        @keyframes floatGolden {
+            0% {
+                bottom: -20px;
+                opacity: 0;
+                transform: translateX(0) scale(0.5);
+            }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 0.8;
+            }
+            100% {
+                bottom: 120%;
+                opacity: 0;
+                transform: translateX(80px) scale(0.3);
+            }
+        }
+        
+        /* Effet de brume dorée */
+        .golden-mist {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 30% 70%, 
+                rgba(234, 88, 12, 0.05) 0%,
+                transparent 50%);
+            z-index: 0;
+            pointer-events: none;
+            animation: mistMove 20s ease-in-out infinite alternate;
+        }
+        
+        @keyframes mistMove {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(100px, -50px) scale(1.2); }
+        }
+        
+        .page-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Bouton retour style aurore */
+        .back-button {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: linear-gradient(135deg, var(--vision-orange) 0%, var(--vision-dark) 100%);
+            color: white;
+            border: 2px solid rgba(234, 88, 12, 0.5);
+            padding: 0.875rem 1.75rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 
+                0 8px 32px rgba(234, 88, 12, 0.4),
+                inset 0 0 20px rgba(255, 255, 255, 0.1);
+            z-index: 100;
+        }
+        
+        .back-button:hover {
+            transform: translateX(-8px) scale(1.05);
+            box-shadow: 
+                0 12px 48px rgba(234, 88, 12, 0.6),
+                inset 0 0 30px rgba(255, 255, 255, 0.2),
+                0 0 60px rgba(234, 88, 12, 0.4);
+        }
+        
+        /* Header avec effet d'aurore */
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 5rem;
+            font-weight: 800;
+            background: linear-gradient(180deg, 
+                #fff 0%, 
+                var(--vision-light) 30%, 
+                var(--vision-orange) 60%, 
+                var(--vision-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            text-shadow: 0 0 40px rgba(234, 88, 12, 0.5);
+            animation: titleGlow 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(234, 88, 12, 0.6));
+        }
+        
+        @keyframes titleGlow {
+            0%, 100% {
+                filter: drop-shadow(0 0 30px rgba(234, 88, 12, 0.6)) brightness(1);
+            }
+            50% {
+                filter: drop-shadow(0 0 50px rgba(234, 88, 12, 0.8)) brightness(1.2);
+            }
+        }
+        
+        .page-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 400;
+        }
+        
+        /* Grille centrée et symétrique */
+        .vision-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .vision-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            padding: 3rem;
+            border: 2px solid rgba(234, 88, 12, 0.2);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+        }
+        
+        .vision-card:nth-child(1) { animation-delay: 0.1s; }
+        .vision-card:nth-child(2) { animation-delay: 0.2s; }
+        .vision-card:nth-child(3) { animation-delay: 0.3s; }
+        .vision-card:nth-child(4) { animation-delay: 0.4s; }
+        
+        /* Lueur intérieure dorée */
+        .vision-card::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(234, 88, 12, 0.2), transparent 70%);
+            opacity: 0;
+            transform: translate(-50%, -50%);
+            transition: all 0.6s ease;
+        }
+        
+        .vision-card:hover::before {
+            width: 400px;
+            height: 400px;
+            opacity: 1;
+        }
+        
+        .vision-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 
+                0 40px 100px rgba(0, 0, 0, 0.6),
+                0 0 80px rgba(234, 88, 12, 0.5),
+                inset 0 0 60px rgba(234, 88, 12, 0.1);
+            border-color: var(--vision-orange);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(234, 88, 12, 0.2);
+        }
+        
+        .card-icon {
+            font-size: 3.5rem;
+            filter: drop-shadow(0 0 20px var(--vision-orange));
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes iconFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                filter: drop-shadow(0 0 20px var(--vision-orange));
+            }
+            50% {
+                transform: translateY(-10px) rotate(5deg);
+                filter: drop-shadow(0 0 40px var(--vision-orange));
+            }
+        }
+        
+        .card-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: white;
+            line-height: 1.3;
+        }
+        
+        .vision-list {
+            list-style: none;
+        }
+        
+        .vision-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: rgba(234, 88, 12, 0.05);
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--vision-orange);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        
+        .vision-item::before {
+            content: '→';
+            color: var(--vision-orange);
+            font-weight: bold;
+            font-size: 1.3rem;
+            line-height: 1;
+        }
+        
+        .vision-item:hover {
+            background: rgba(234, 88, 12, 0.15);
+            transform: translateX(12px);
+            border-left-width: 6px;
+            box-shadow: 0 8px 30px rgba(234, 88, 12, 0.3);
+        }
+        
+        .vision-item p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            flex: 1;
+            font-size: 1.05rem;
+        }
+
+        /* CONTINUER DANS LA PARTIE 2... */
+    </style>
+</head>
+
+    <style>
+            /* Timeline circulaire (spiral) */
+            .timeline-section {
+                background: rgba(255, 255, 255, 0.02);
+                backdrop-filter: blur(10px);
+                border-radius: 32px;
+                padding: 4rem;
+                border: 2px solid rgba(234, 88, 12, 0.3);
+                position: relative;
+                overflow: hidden;
+                animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s backwards;
+                margin-bottom: 3rem;
+                max-width: 1200px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .timeline-title {
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: 2.5rem;
+                font-weight: 700;
+                text-align: center;
+                margin-bottom: 3rem;
+                background: linear-gradient(135deg, var(--vision-orange) 0%, var(--vision-light) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            
+            .timeline-spiral {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                gap: 3rem;
+                padding: 2rem;
+            }
+            
+            .timeline-step {
+                display: flex;
+                align-items: flex-start;
+                gap: 2rem;
+                position: relative;
+                animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+            }
+            
+            .timeline-step:nth-child(1) { animation-delay: 0.6s; }
+            .timeline-step:nth-child(2) { animation-delay: 0.7s; }
+            .timeline-step:nth-child(3) { animation-delay: 0.8s; }
+            
+            .step-marker {
+                width: 60px;
+                height: 60px;
+                background: linear-gradient(135deg, var(--vision-orange) 0%, var(--vision-dark) 100%);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                font-size: 1.5rem;
+                box-shadow: 
+                    0 0 0 8px rgba(234, 88, 12, 0.2),
+                    0 0 30px rgba(234, 88, 12, 0.5);
+                flex-shrink: 0;
+                animation: markerPulse 2s ease-in-out infinite;
+            }
+            
+            @keyframes markerPulse {
+                0%, 100% {
+                    box-shadow: 
+                        0 0 0 8px rgba(234, 88, 12, 0.2),
+                        0 0 30px rgba(234, 88, 12, 0.5);
+                }
+                50% {
+                    box-shadow: 
+                        0 0 0 12px rgba(234, 88, 12, 0.4),
+                        0 0 50px rgba(234, 88, 12, 0.7);
+                }
+            }
+            
+            .step-content {
+                flex: 1;
+                background: rgba(255, 255, 255, 0.03);
+                backdrop-filter: blur(5px);
+                border-radius: 20px;
+                padding: 2rem;
+                border: 1px solid rgba(234, 88, 12, 0.2);
+                transition: all 0.4s ease;
+            }
+            
+            .step-content:hover {
+                transform: translateX(10px);
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+                border-color: var(--vision-orange);
+            }
+            
+            .step-year {
+                font-weight: 700;
+                color: var(--vision-light);
+                font-size: 0.875rem;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                margin-bottom: 0.75rem;
+            }
+            
+            .step-content h3 {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: white;
+                margin-bottom: 0.5rem;
+            }
+            
+            .step-location {
+                color: rgba(255, 255, 255, 0.6);
+                font-size: 0.95rem;
+                margin-bottom: 1rem;
+            }
+            
+            .step-details ul {
+                list-style: none;
+                margin-top: 1rem;
+            }
+            
+            .step-details li {
+                color: rgba(255, 255, 255, 0.8);
+                padding: 0.5rem 0;
+                padding-left: 1.5rem;
+                position: relative;
+            }
+            
+            .step-details li::before {
+                content: '✓';
+                position: absolute;
+                left: 0;
+                color: var(--vision-orange);
+                font-weight: bold;
+            }
+            
+            /* Citation section avec effet sunset */
+            .quote-section {
+                background: rgba(255, 255, 255, 0.02);
+                backdrop-filter: blur(10px);
+                border-radius: 32px;
+                padding: 4rem;
+                border: 2px solid rgba(234, 88, 12, 0.3);
+                text-align: center;
+                position: relative;
+                overflow: hidden;
+                animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.9s backwards;
+                max-width: 1200px;
+                margin-left: auto;
+                margin-right: auto;
+                margin-bottom: 3rem;
+            }
+            
+            .quote-section::before {
+                content: '"';
+                position: absolute;
+                top: 10px;
+                left: 30px;
+                font-size: 120px;
+                color: rgba(234, 88, 12, 0.2);
+                font-family: Georgia, serif;
+                line-height: 1;
+            }
+            
+            .quote-section::after {
+                content: '';
+                position: absolute;
+                bottom: -50%;
+                right: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(circle, rgba(234, 88, 12, 0.1) 0%, transparent 50%);
+                animation: rotateGlow 25s linear infinite;
+                z-index: 0;
+            }
+            
+            @keyframes rotateGlow {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            
+            .quote-text {
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: 1.75rem;
+                font-style: italic;
+                color: white;
+                line-height: 1.8;
+                margin-bottom: 1.5rem;
+                position: relative;
+                z-index: 1;
+                font-weight: 500;
+            }
+            
+            .quote-author {
+                font-size: 1.125rem;
+                font-weight: 700;
+                background: linear-gradient(135deg, var(--vision-orange) 0%, var(--vision-light) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                position: relative;
+                z-index: 1;
+            }
+            
+            /* Footer moderne avec glassmorphism */
+            .main-footer {
+                margin-top: 3rem;
+                padding: 20px;
+                background: rgba(255, 255, 255, 0.03);
+                backdrop-filter: blur(10px);
+                border-radius: 24px;
+                border: 1px solid rgba(234, 88, 12, 0.2);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+                animation: fadeInUp 0.8s ease-out 1s backwards;
+                max-width: 1200px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .contact-info {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                flex-wrap: wrap;
+            }
+
+            .contact-info p {
+                font-size: 0.95em;
+                font-weight: 600;
+                color: var(--vision-light);
+                transition: all 0.3s ease;
+                padding: 10px 20px;
+                border-radius: 12px;
+                background: rgba(234, 88, 12, 0.1);
+                border: 1px solid rgba(234, 88, 12, 0.3);
+                margin: 0;
+            }
+
+            .contact-info p:hover {
+                background: var(--vision-orange);
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+            }
+
+            .linkedin-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-size: 0.95em;
+                font-weight: 600;
+                color: var(--vision-light);
+                text-decoration: none;
+                padding: 10px 20px;
+                border-radius: 12px;
+                background: rgba(234, 88, 12, 0.1);
+                border: 1px solid rgba(234, 88, 12, 0.3);
+                transition: all 0.3s ease;
+            }
+
+            .linkedin-link:hover {
+                background: var(--vision-orange);
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+            }
+
+            .linkedin-icon {
+                width: 20px;
+                height: 20px;
+                fill: currentColor;
+            }
+            
+            /* Responsive */
+            @media (max-width: 1024px) {
+                .vision-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+            
+            @media (max-width: 768px) {
+                .page-title {
+                    font-size: 3rem;
+                }
+                
+                .page-subtitle {
+                    font-size: 1.25rem;
+                }
+                
+                .vision-card {
+                    padding: 2rem;
+                }
+                
+                .card-icon {
+                    font-size: 2.5rem;
+                }
+                
+                .card-title {
+                    font-size: 1.5rem;
+                }
+                
+                .back-button {
+                    top: 1rem;
+                    left: 1rem;
+                    padding: 0.75rem 1.5rem;
+                }
+                
+                .quote-text {
+                    font-size: 1.25rem;
+                }
+                
+                .timeline-section {
+                    padding: 2.5rem;
+                }
+            }
+            
+            @media (max-width: 640px) {
+                .page-container {
+                    padding: 1rem;
+                }
+                
+                .page-title {
+                    font-size: 2.5rem;
+                }
+                
+                .vision-card {
+                    padding: 1.75rem;
+                }
+                
+                .contact-info {
+                    flex-direction: column;
+                    gap: 10px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Horizon lumineux -->
+        <div class="horizon-glow"></div>
+        
+        <!-- Rayons de lumière -->
+        <div class="light-rays">
+            <div class="ray"></div>
+            <div class="ray"></div>
+            <div class="ray"></div>
+            <div class="ray"></div>
+            <div class="ray"></div>
+            <div class="ray"></div>
+        </div>
+        
+        <!-- Particules dorées -->
+        <div class="golden-particles" id="goldenParticles"></div>
+        
+        <!-- Brume dorée -->
+        <div class="golden-mist"></div>
+        
+        <a href="index.html" class="back-button">← Retour</a>
+        
+        <div class="page-container">
+            <header class="page-header">
+                <h1 class="page-title">🌅 Vision</h1>
+                <p class="page-subtitle">L'horizon de ma carrière</p>
+            </header>
+            
+            <!-- Grille centrée et symétrique -->
+            <div class="vision-grid">
+                <!-- Carte 1 -->
+                <div class="vision-card">
+                    <div class="card-header">
+                        <span class="card-icon">⚡</span>
+                        <h2 class="card-title">Vision Énergétique</h2>
+                    </div>
+                    <ul class="vision-list">
+                        <li class="vision-item">
+                            <p>Promouvoir l'efficacité énergétique</p>
+                        </li>
+                        <li class="vision-item">
+                            <p>Soutenir la transition durable</p>
+                        </li>
+                        <li class="vision-item">
+                            <p>Optimiser les systèmes existants</p>
+                        </li>
+                        <li class="vision-item">
+                            <p>Développer des solutions sobres</p>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Carte 2 -->
+                <div class="vision-card">
+                    <div class="card-header">
+                        <span class="card-icon">🚀</span>
+                        <h2 class="card-title">Vision Long Terme</h2>
+                    </div>
+                    <ul class="vision-list">
+                        <li class="vision-item">
+                            <p>Devenir ingénieur en génie climatique</p>
+                        </li>
+                        <li class="vision-item">
+                            <p>Intégrer des projets d'envergure</p>
+                        </li>
+                        <li class="vision-item">
+                            <p>Associer expertise et innovation</p>
+                        </li>
+                        <li class="vision-item">
+                            <p>Développer une spécialisation solide</p>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Carte 3 -->
+                <div class="vision-card">
+                    <div class="card-header">
+                        <span class="card-icon">🔧</span>
+                        <h2 class="card-title">Vision Technique</h2>
+                    </div>
+                    <ul class="vision-list">
+                        <li class="vision-item">
+                            <p>Allier théorie et pratique</p>
+                        </li>
+                        <li class="vision-item">
+                            <p>Maîtriser les outils de simulation</p>
+                        </li>
+                        <li class="vision-item">
+                            <p>Comprendre les systèmes complexes</p>
+                        </li>
+                        <li class="vision-item">
+                            <p>Travailler au cœur de la technique</p>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Carte 4 -->
+                <div class="vision-card">
+                    <div class="card-header">
+                        <span class="card-icon">🌍</span>
+                        <h2 class="card-title">Vision Globale</h2>
+                    </div>
+                    <ul class="vision-list">
+                        <li class="vision-item">
+                            <p>Contribuer à un avenir durable</p>
+                        </li>
+                        <li class="vision-item">
+                            <p>Participer à des projets internationaux</p>
+                        </li>
+                        <li class="vision-item">
+                            <p>Développer des compétences transverses</p>
+                        </li>
+                        <li class="vision-item">
+                            <p>Créer un impact positif</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Timeline -->
+            <section class="timeline-section">
+                <h2 class="timeline-title">Parcours Académique</h2>
+                <div class="timeline-spiral">
+                    <div class="timeline-step">
+                        <div class="step-marker">1</div>
+                        <div class="step-content">
+                            <div class="step-year">2025 - 2027</div>
+                            <h3>BUT Métiers de la Transition et de l'Efficacité Energétique</h3>
+                            <p class="step-location">IUT d'Orléans</p>
+                            <div class="step-details">
+                                <ul>
+                                    <li>Formation pluridisciplinaire en énergétique</li>
+                                    <li>Maîtrise des outils de simulation thermique</li>
+                                    <li>Projets techniques et professionnels</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-step">
+                        <div class="step-marker">2</div>
+                        <div class="step-content">
+                            <div class="step-year">2027 - 2030</div>
+                            <h3>École d'Ingénieurs</h3>
+                            <p class="step-location">Formation Spécialisée</p>
+                            <div class="step-details">
+                                <ul>
+                                    <li>Approfondissement des compétences techniques</li>
+                                    <li>Spécialisation en efficacité énergétique</li>
+                                    <li>Projets innovants et recherche appliquée</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-step">
+                        <div class="step-marker">3</div>
+                        <div class="step-content">
+                            <div class="step-year">2026+</div>
+                            <h3>Carrière Professionnelle</h3>
+                            <p class="step-location">Industrie & Innovation</p>
+                            <div class="step-details">
+                                <ul>
+                                    <li>Ingénieur en bureau d'études</li>
+                                    <li>Conception de systèmes énergétiques</li>
+                                    <li>Contribution à la transition écologique</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            
+            <!-- Footer -->
+            <footer class="main-footer">
+                <div class="contact-info">
+                    <p>📧 youssefbenjazia36@gmail.com</p>
+                    <a href="https://www.linkedin.com/in/youssef-ben-jazia-2b2aa4383/" target="_blank" rel="noopener noreferrer" class="linkedin-link">
+                        <svg class="linkedin-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                        </svg>
+                        LinkedIn
+                    </a>
+                </div>
+            </footer>
+        </div>
+        
+        <script>
+            // Génération de particules dorées
+            function createGoldenParticles() {
+                const container = document.getElementById('goldenParticles');
+                const particleCount = 30;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'golden-particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 20 + 's';
+                    particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                    container.appendChild(particle);
+                }
+            }
+            
+            createGoldenParticles();
+        </script>
+    </body>
+</html>

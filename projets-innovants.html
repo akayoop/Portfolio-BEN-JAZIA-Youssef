@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projets - BEN JAZIA Youssef</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a0b2e;
+            --secondary: #2d1b4e;
+            --accent: #ff006e;
+            --accent-light: #ff4d94;
+            --purple: #8b5cf6;
+            --cyan: #06b6d4;
+            --green: #10b981;
+            --orange: #f97316;
+            --light: #fafafa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 50%, #4a1e5c 100%);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Animated particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; top: 20%; }
+        .particle:nth-child(2) { left: 20%; animation-delay: 2s; top: 80%; }
+        .particle:nth-child(3) { left: 30%; animation-delay: 4s; top: 40%; }
+        .particle:nth-child(4) { left: 40%; animation-delay: 1s; top: 60%; }
+        .particle:nth-child(5) { left: 50%; animation-delay: 3s; top: 30%; }
+        .particle:nth-child(6) { left: 60%; animation-delay: 5s; top: 70%; }
+        .particle:nth-child(7) { left: 70%; animation-delay: 2s; top: 50%; }
+        .particle:nth-child(8) { left: 80%; animation-delay: 4s; top: 90%; }
+        .particle:nth-child(9) { left: 90%; animation-delay: 1s; top: 10%; }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0;
+            }
+        }
+        
+        /* Diagonal lines pattern */
+        .pattern-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 50px,
+                rgba(255, 0, 110, 0.03) 50px,
+                rgba(255, 0, 110, 0.03) 51px
+            );
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .page-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .back-button {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            color: white;
+            border: none;
+            padding: 0.875rem 1.75rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(255, 0, 110, 0.4);
+            z-index: 100;
+        }
+        
+        .back-button:hover {
+            transform: translateX(-8px) scale(1.05);
+            box-shadow: 0 12px 48px rgba(255, 0, 110, 0.6);
+        }
+        
+        /* Header with neon effect */
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .page-title {
+            font-size: 4.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            text-shadow: 
+                0 0 10px var(--accent),
+                0 0 20px var(--accent),
+                0 0 40px var(--accent),
+                0 0 80px var(--accent);
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% {
+                text-shadow: 
+                    0 0 10px var(--accent),
+                    0 0 20px var(--accent),
+                    0 0 40px var(--accent),
+                    0 0 80px var(--accent);
+            }
+            50% {
+                text-shadow: 
+                    0 0 20px var(--accent),
+                    0 0 40px var(--accent),
+                    0 0 60px var(--accent),
+                    0 0 100px var(--accent);
+            }
+        }
+        
+        .page-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 400;
+        }
+        
+        /* Projects timeline layout */
+        .projects-container {
+            position: relative;
+            padding: 2rem 0;
+        }
+        
+        /* Vertical line */
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, 
+                var(--accent) 0%, 
+                var(--purple) 33%, 
+                var(--cyan) 66%, 
+                var(--green) 100%);
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
+        }
+        
+        .project-item {
+            position: relative;
+            margin-bottom: 4rem;
+            animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+        }
+        
+        .project-item:nth-child(1) { animation-delay: 0.1s; }
+        .project-item:nth-child(2) { animation-delay: 0.2s; }
+        .project-item:nth-child(3) { animation-delay: 0.3s; }
+        .project-item:nth-child(4) { animation-delay: 0.4s; }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Alternating left/right */
+        .project-item:nth-child(odd) .project-card {
+            margin-left: 0;
+            margin-right: calc(50% + 3rem);
+        }
+        
+        .project-item:nth-child(even) .project-card {
+            margin-right: 0;
+            margin-left: calc(50% + 3rem);
+        }
+        
+        /* Timeline dot */
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 2rem;
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border: 4px solid var(--primary);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 0 8px rgba(255, 0, 110, 0.2),
+                        0 0 20px var(--accent);
+            z-index: 2;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-dot {
+            0%, 100% {
+                box-shadow: 0 0 0 8px rgba(255, 0, 110, 0.2),
+                            0 0 20px var(--accent);
+            }
+            50% {
+                box-shadow: 0 0 0 12px rgba(255, 0, 110, 0.4),
+                            0 0 30px var(--accent);
+            }
+        }
+        
+        /* Color variations for dots */
+        .project-item:nth-child(2) .timeline-dot { background: var(--purple); box-shadow: 0 0 0 8px rgba(139, 92, 246, 0.2), 0 0 20px var(--purple); }
+        .project-item:nth-child(3) .timeline-dot { background: var(--cyan); box-shadow: 0 0 0 8px rgba(6, 182, 212, 0.2), 0 0 20px var(--cyan); }
+        .project-item:nth-child(4) .timeline-dot { background: var(--green); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0.2), 0 0 20px var(--green); }
+        
+        .project-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(255, 0, 110, 0.1), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .project-card:hover::before {
+            opacity: 1;
+        }
+        
+        .project-card:hover {
+            transform: scale(1.03) translateY(-8px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 0, 110, 0.3);
+            border-color: var(--accent);
+        }
+        
+        /* Different accent colors for each card */
+        .project-item:nth-child(1) .project-card:hover { border-color: var(--accent); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 40px var(--accent); }
+        .project-item:nth-child(2) .project-card:hover { border-color: var(--purple); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 40px var(--purple); }
+        .project-item:nth-child(3) .project-card:hover { border-color: var(--cyan); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 40px var(--cyan); }
+        .project-item:nth-child(4) .project-card:hover { border-color: var(--green); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 40px var(--green); }
+        
+        .project-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .project-icon {
+            font-size: 3rem;
+            filter: drop-shadow(0 0 20px currentColor);
+        }
+        
+        .project-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        
+        .project-date {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+        
+        .project-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+        
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        
+        .tag {
+            padding: 0.5rem 1.25rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .tag:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Color coding for tags */
+        .project-item:nth-child(1) .tag:hover { background: rgba(255, 0, 110, 0.3); border-color: var(--accent); }
+        .project-item:nth-child(2) .tag:hover { background: rgba(139, 92, 246, 0.3); border-color: var(--purple); }
+        .project-item:nth-child(3) .tag:hover { background: rgba(6, 182, 212, 0.3); border-color: var(--cyan); }
+        .project-item:nth-child(4) .tag:hover { background: rgba(16, 185, 129, 0.3); border-color: var(--green); }
+        
+        /* Footer moderne */
+        .main-footer {
+            margin-top: 3rem;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 0, 110, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s ease-out 0.5s backwards;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .contact-info p {
+            font-size: 0.95em;
+            font-weight: 600;
+            color: var(--accent-light);
+            transition: all 0.3s ease;
+            padding: 10px 20px;
+            border-radius: 12px;
+            background: rgba(255, 0, 110, 0.1);
+            border: 1px solid rgba(255, 0, 110, 0.3);
+            margin: 0;
+        }
+
+        .contact-info p:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 0, 110, 0.3);
+        }
+
+        .linkedin-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95em;
+            font-weight: 600;
+            color: var(--accent-light);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            background: rgba(255, 0, 110, 0.1);
+            border: 1px solid rgba(255, 0, 110, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .linkedin-link:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 0, 110, 0.3);
+        }
+
+        .linkedin-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .timeline-line {
+                left: 2rem;
+            }
+            
+            .timeline-dot {
+                left: 2rem;
+            }
+            
+            .project-item:nth-child(odd) .project-card,
+            .project-item:nth-child(even) .project-card {
+                margin-left: 5rem;
+                margin-right: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.25rem;
+            }
+            
+            .project-card {
+                padding: 2rem;
+            }
+            
+            .project-icon {
+                font-size: 2.5rem;
+            }
+            
+            .project-title {
+                font-size: 1.5rem;
+            }
+            
+            .back-button {
+                top: 1rem;
+                left: 1rem;
+            }
+            
+            .timeline-line {
+                left: 1rem;
+            }
+            
+            .timeline-dot {
+                left: 1rem;
+            }
+            
+            .project-item:nth-child(odd) .project-card,
+            .project-item:nth-child(even) .project-card {
+                margin-left: 3rem;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    
+    <div class="pattern-overlay"></div>
+    
+    <a href="index.html" class="back-button">← Retour</a>
+    
+    <div class="page-container">
+        <header class="page-header">
+            <h1 class="page-title">💼 Mes Projets</h1>
+            <p class="page-subtitle">Parcours technique et réalisations</p>
+        </header>
+        
+        <div class="projects-container">
+            <div class="timeline-line"></div>
+            
+            <!-- Project 1 -->
+            <div class="project-item">
+                <div class="timeline-dot"></div>
+                <div class="project-card">
+                    <div class="project-header">
+                        <span class="project-icon">💻</span>
+                        <div>
+                            <h2 class="project-title">Développement Web : Portfolio</h2>
+                            <p class="project-date">2025 • Projet Personnel</p>
+                        </div>
+                    </div>
+                    <p class="project-description">
+                        Développement intégral de mon portfolio professionnel en HTML, CSS et JavaScript. Création d'une architecture propre et responsive avec interface à bulles interactives. Implémentation d'animations avancées, transitions fluides et optimisation complète des performances.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">HTML/CSS/JavaScript</span>
+                        <span class="tag">Design responsive</span>
+                        <span class="tag">Animations</span>
+                        <span class="tag">UX/UI</span>
+                        <span class="tag">Optimisation</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Project 2 -->
+            <div class="project-item">
+                <div class="timeline-dot"></div>
+                <div class="project-card">
+                    <div class="project-header">
+                        <span class="project-icon">🔧</span>
+                        <div>
+                            <h2 class="project-title">Projet Équilibrage Radiateur</h2>
+                            <p class="project-date">2025 • IUT d'Orléans</p>
+                        </div>
+                    </div>
+                    <p class="project-description">
+                        Étude approfondie des écoulements et pertes de charge dans un système de chauffage. Mesures en conditions réelles, modélisation Excel et élaboration d'un protocole d'équilibrage hydraulique optimisé.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Écoulements</span>
+                        <span class="tag">Pertes de charge</span>
+                        <span class="tag">Modélisation Excel</span>
+                        <span class="tag">Équilibrage hydraulique</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Project 3 -->
+            <div class="project-item">
+                <div class="timeline-dot"></div>
+                <div class="project-card">
+                    <div class="project-header">
+                        <span class="project-icon">⚡</span>
+                        <div>
+                            <h2 class="project-title">Etude d'un stockage gravitaire</h2>
+                            <p class="project-date">2023-2024 • Classe Préparatoire MP</p>
+                        </div>
+                    </div>
+                    <p class="project-description">
+                        Modélisation complète mécanique et électrique d'un système de stockage d'énergie par gravité. Simulation dynamique du système, expérimentations variées et analyse rigoureuse des incertitudes de mesure.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Modélisation mécanique</span>
+                        <span class="tag">Modélisation électrique</span>
+                        <span class="tag">Simulation dynamique</span>
+                        <span class="tag">Analyse d'incertitudes</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Project 4 -->
+            <div class="project-item">
+                <div class="timeline-dot"></div>
+                <div class="project-card">
+                    <div class="project-header">
+                        <span class="project-icon">🌪️</span>
+                        <div>
+                            <h2 class="project-title">Etude de l'influence du vent</h2>
+                            <p class="project-date">2023-2025 • Classe Préparatoire MPSI</p>
+                        </div>
+                    </div>
+                    <p class="project-description">
+                        Étude approfondie des oscillations sous vent avec modélisation mécanique complète. Réalisation d'expérimentations en soufflerie et mesures en conditions réelles pour valider les modèles théoriques et proposer des améliorations.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Modélisation mécanique</span>
+                        <span class="tag">Soufflerie</span>
+                        <span class="tag">Mesures réelles</span>
+                        <span class="tag">Analyse des résultats</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="contact-info">
+                <p>📧 youssefbenjazia36@gmail.com</p>
+                <a href="https://www.linkedin.com/in/youssef-ben-jazia-2b2aa4383/" target="_blank" rel="noopener noreferrer" class="linkedin-link">
+                    <svg class="linkedin-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    </svg>
+                    LinkedIn
+                </a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

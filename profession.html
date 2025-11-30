@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profession - BEN JAZIA Youssef</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0a1a0f;
+            --secondary: #0f2818;
+            --accent: #10b981;
+            --accent-light: #34d399;
+            --accent-dark: #059669;
+            --emerald: #047857;
+            --light: #f0fdf4;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a1a0f 0%, #0f2818 50%, #1a2f1a 100%);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Hexagonal pattern background */
+        .hex-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.05;
+        }
+        
+        .hex-background svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Animated particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0) translateX(0);
+                opacity: 0.3;
+            }
+            50% { 
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0.6;
+            }
+        }
+        
+        /* Glowing orbs */
+        .orbs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.15;
+            animation: floatOrb 30s infinite ease-in-out;
+        }
+        
+        .orb:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            background: var(--accent);
+            top: -10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+        
+        .orb:nth-child(2) {
+            width: 500px;
+            height: 500px;
+            background: var(--accent-light);
+            top: 60%;
+            right: -15%;
+            animation-delay: 7s;
+        }
+        
+        .orb:nth-child(3) {
+            width: 350px;
+            height: 350px;
+            background: var(--emerald);
+            bottom: -10%;
+            left: 40%;
+            animation-delay: 14s;
+        }
+        
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(60px, -60px) scale(1.1); }
+            66% { transform: translate(-40px, 50px) scale(0.9); }
+        }
+        
+        .page-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .back-button {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: rgba(16, 185, 129, 0.1);
+            backdrop-filter: blur(10px);
+            color: var(--accent-light);
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            padding: 0.875rem 1.75rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 100;
+        }
+        
+        .back-button:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateX(-8px) scale(1.05);
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+        }
+        
+        /* Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            padding: 3rem 2rem 2rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #34d399 0%, #10b981 50%, #059669 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .page-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 400;
+            margin-bottom: 0;
+        }
+        
+        /* Timeline Section */
+        .timeline-section {
+            margin-bottom: 4rem;
+            animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards;
+        }
+        
+        .timeline-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-light);
+            text-align: center;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .timeline-title::before,
+        .timeline-title::after {
+            content: '';
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .timeline-line {
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            width: 90%;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                rgba(16, 185, 129, 0.3) 0%, 
+                rgba(16, 185, 129, 0.6) 25%,
+                rgba(16, 185, 129, 0.6) 75%,
+                rgba(16, 185, 129, 0.3) 100%);
+            border-radius: 2px;
+            transform: translateY(-50%);
+        }
+        
+        .timeline-items {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            position: relative;
+            padding: 3rem 0;
+        }
+        
+        .timeline-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            animation: fadeInScale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+        }
+        
+        .timeline-item:nth-child(1) { animation-delay: 0.3s; }
+        .timeline-item:nth-child(2) { animation-delay: 0.4s; }
+        .timeline-item:nth-child(3) { animation-delay: 0.5s; }
+        .timeline-item:nth-child(4) { animation-delay: 0.6s; }
+        
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .timeline-dot {
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border: 4px solid var(--primary);
+            border-radius: 50%;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
+            transition: all 0.4s ease;
+        }
+        
+        .timeline-item:hover .timeline-dot {
+            transform: scale(1.5);
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.8);
+        }
+        
+        .timeline-content {
+            text-align: center;
+            margin-top: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            min-height: 140px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .timeline-item:hover .timeline-content {
+            transform: translateY(-8px);
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--accent);
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.2);
+        }
+        
+        .timeline-role {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-light);
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-period {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+        }
+        
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s backwards;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .content-block {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            padding: 3rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .content-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .content-block:hover::before {
+            left: 100%;
+        }
+        
+        .content-block:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: var(--accent);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4), 0 0 40px rgba(16, 185, 129, 0.3);
+        }
+        
+        .block-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(16, 185, 129, 0.2);
+        }
+        
+        .block-icon {
+            font-size: 3.5rem;
+            filter: drop-shadow(0 0 15px rgba(16, 185, 129, 0.4));
+        }
+        
+        .block-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: white;
+            line-height: 1.3;
+        }
+        
+        .block-list {
+            list-style: none;
+        }
+        
+        .block-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--accent);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .block-item::before {
+            content: '✓';
+            color: var(--accent-light);
+            font-weight: bold;
+            font-size: 1.3rem;
+            min-width: 24px;
+        }
+        
+        .block-item:hover {
+            background: rgba(16, 185, 129, 0.1);
+            transform: translateX(10px);
+            border-left-width: 6px;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.2);
+        }
+        
+        .block-item p {
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.6;
+            flex: 1;
+        }
+        
+        /* Footer */
+        .main-footer {
+            margin-top: 4rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s ease-out 0.6s backwards;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .contact-info p {
+            font-size: 0.95em;
+            font-weight: 600;
+            color: var(--accent-light);
+            transition: all 0.3s ease;
+            padding: 10px 20px;
+            border-radius: 12px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .contact-info p:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        
+        .linkedin-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95em;
+            font-weight: 600;
+            color: var(--accent-light);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .linkedin-link:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        
+        .linkedin-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline-items {
+                flex-direction: column;
+                gap: 3rem;
+            }
+            
+            .timeline-line {
+                width: 4px;
+                height: 100%;
+                left: 50%;
+                top: 0;
+                transform: translateX(-50%);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.25rem;
+            }
+            
+            .timeline-title {
+                font-size: 1.5rem;
+            }
+            
+            .timeline-role {
+                font-size: 1.1rem;
+            }
+            
+            .content-block {
+                padding: 2rem;
+            }
+            
+            .block-icon {
+                font-size: 2.5rem;
+            }
+            
+            .block-title {
+                font-size: 1.4rem;
+            }
+            
+            .back-button {
+                top: 1rem;
+                left: 1rem;
+            }
+            
+            .contact-info {
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .contact-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hex-background">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+            <defs>
+                <pattern id="hexagons" x="0" y="0" width="56" height="100" patternUnits="userSpaceOnUse">
+                    <polygon points="28,0 56,15 56,45 28,60 0,45 0,15" fill="none" stroke="rgba(16, 185, 129, 0.3)" stroke-width="1"/>
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#hexagons)" />
+        </svg>
+    </div>
+    
+    <div class="particles" id="particles"></div>
+    
+    <div class="orbs">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+    
+    <a href="index.html" class="back-button">← Retour</a>
+    
+    <div class="page-container">
+        <header class="page-header">
+            <h1 class="page-title">💼 Ma Profession</h1>
+            <p class="page-subtitle">Parcours & Expertise en Génie Climatique</p>
+        </header>
+        
+        <!-- Timeline Section -->
+        <section class="timeline-section">
+            <h2 class="timeline-title">
+                <span>🚀 Trajectoire Professionnelle</span>
+            </h2>
+            <div class="timeline">
+                <div class="timeline-line"></div>
+                <div class="timeline-items">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-role">Assistant Responsable d'Affaires</h3>
+                            <p class="timeline-period">Aujourd'hui</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-role">Responsable d'Affaires</h3>
+                            <p class="timeline-period">Court terme</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-role">Chef de Projet</h3>
+                            <p class="timeline-period">Moyen terme</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-role">Chef d'Entreprise</h3>
+                            <p class="timeline-period">Vision long terme</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Content Blocks -->
+        <div class="content-grid">
+            <!-- Block 1: Missions -->
+            <div class="content-block">
+                <div class="block-header">
+                    <span class="block-icon">🛠️</span>
+                    <h2 class="block-title">Missions Professionnelles</h2>
+                </div>
+                <ul class="block-list">
+                    <li class="block-item">
+                        <p>Assistant Responsable d'Affaires en génie climatique</p>
+                    </li>
+                    <li class="block-item">
+                        <p>Réalisation de relevés techniques et analyses terrain</p>
+                    </li>
+                    <li class="block-item">
+                        <p>Suivi de chantiers et coordination des équipes</p>
+                    </li>
+                    <li class="block-item">
+                        <p>Proposition de solutions techniques adaptées aux besoins clients</p>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Block 2: Apports -->
+            <div class="content-block">
+                <div class="block-header">
+                    <span class="block-icon">🤝</span>
+                    <h2 class="block-title">Apports Professionnels</h2>
+                </div>
+                <ul class="block-list">
+                    <li class="block-item">
+                        <p>Rigueur, autonomie et organisation en contexte industriel</p>
+                    </li>
+                    <li class="block-item">
+                        <p>Communication efficace avec équipes techniques et clients</p>
+                    </li>
+                    <li class="block-item">
+                        <p>Capacité à résoudre des problématiques en génie climatique</p>
+                    </li>
+                    <li class="block-item">
+                        <p>Approche orientée performance et amélioration continue</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="contact-info">
+                <p>📧 youssefbenjazia36@gmail.com</p>
+                <a href="https://www.linkedin.com/in/youssef-ben-jazia-2b2aa4383/" target="_blank" rel="noopener noreferrer" class="linkedin-link">
+                    <svg class="linkedin-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    </svg>
+                    LinkedIn
+                </a>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Generate particles
+        function generateParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+        
+        generateParticles();
+    </script>
+</body>
+</html>
